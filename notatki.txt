@@ -1,0 +1,113 @@
++1.Dziennik Studencki.
+--2.Batkerie/Symulacja z wieloma obiektami
+3.Księgowość
++4.Magazyn
+--5.Po(GUI+niewiadomo)
+
+GUI(SFML, Windows Forms)
+
+
+DZIENNIK STUDENCKI(aka. J.S.O.S. v3.0)----------------------------------------------------------------------------------
+
+1.Program zawiera:
+-Dane studentów
+-Kalendarz z zajęciami
+-System pocztowy
+-Grupy do wspólnego pisania
+-Śledzenie aktywności studenckich z wykorzystaniem czasu 
+-Dodawanie swoich aktywności
+-Zapisy na zajęcia
+-Wyświetlanie kalendarza
+
+
+C++
+1.Założenia:
+aplikacja ma na celu pomoc studentom w organizacji czasu przez system kalendarza który będzie sie automatycznie wypełniać w zależności od kierunku i kursu studenta. Będzie ułatwiała komunikacje na płaszczyźnie student-student oraz student-wykładowca przez stworzenie skrzynki mailowej oraz czatu grupowego/kierunkowego. Aplikacja bedzie też umożliwiała zapisy w zależności wektora zapisowego do którego student ma uprawnienia. W górnej części menu będą wyświetlane  ostatnie powiadomienia po których kliknięciu pokaże się pełny ich spis. Dostępna też będzie opcja konta admina która będzie umożliwiała edycje użytkowników oraz kierunków z wraz podległymi im wektorami(kursy->grupy->terminy).  Każdy element programu będzie ze sobą połączony w sposób umożliwiający szybkie i proste zdobywanie inforamcji o zbliżających się wydarzeniach.
+
+2.Opis funkcjonalny programu:
+/*-Program pobiera dane studentów,kursów z terminami(kolokwiów,zadań,egzaminów,zajęć itp.) z uprzednio stworzonej bazy danych
+-Dynamiczny kalendarz z korzystający z danej bazy danych oraz umożliwiający tworzenie/edycje wydarzeń do których użytkownik ma uprawnienia
+-Osobista skrzynka pocztowa umożliwiająca komunikacje student-wykładowca oraz odbierająca automatyczne powiadomienia
+-Automatycznie tworzony prywatny czat studencki do danych zajęć*/
+
+Działanie programu:
+1.system logowania
+	1.1.w razie blednego logowania ponowne zastosowanie metody system logowanie
+	1.1. w razie poprawnego logowania wczytanie wybranych danych z przejsciem do menu
+
+2.menu z wyborem 
+	2.1.kalendarz
+		2.1.1. wysietlenie siatki zajec
+		2.1.2. dodawanie/usuwanie zajec usera
+		2.1.3. dodawanie/usuwanie notatek do zajec
+		2.1.4. dodawanie/usuwanie powiadomien
+	2.2.czat<opcja student>
+		2.2.1. wybór grup z kursu/zajęć
+			2.2.1.1. możliwość wysłania wiadomości
+		2.2.2(+/- customowe grupki?)
+	
+	2.3.poczta
+		2.3.1. wyswietlenie ostatnich "n" maili
+		2.3.2. nawigacja po mailach
+		2.3.3. pisanie maili
+		2.3.4. usuwanie maili
+
+	2.4.zapisy <opcja student>
+		2.4.1. wyswietlanie mozliwych grup/kursow z wektora zapisowego(w formie kalendarza)
+		2.4.2. wyswietlenie kalendarza z już wybranymi kursami
+		2.4.3. (zapisy ograniczone limitem czasowym?)
+
+	2.5.powiadomienia(wyswietlane w menu jako pasek z najświeższym powiadomieniem)(powiadomienia sa w formie mailowej informacyjnej w pasku)
+		2.5.1. Ustawienia powiadomien
+			2.5.1.1. ON/OFF powiadomienia o otrzymaniu maila(w postaci klawiszy)
+			2.5.1.1. ON/OFF powiadomienia z kalendarza(w postaci klawiszy)
+		2.5.2. Najswierzsze powiadomienia z wyswietlaniem kluczowych informacji
+			2.5.2.1 rozwiniete wyswietlenie wybranego powiadomienia
+	2.6.Kierunki-wektory <opcja admin>
+		2.6.1. +/- Kierunkow wraz z zawartością(powiadomienia)			
+			2.6.2. +/- Edycja Kierunkow
+				2.6.2.1. +/- kursow wraz z zawartością(powiadomienia)
+					2.6.2. +/- Edycja kursow
+						2.6.2.1. +/- grup wraz z zawartością(powiadomienia)
+							2.6.2.1. +/- Edycja grup
+								2.6.2.1. +/- grup terminy z zawartością(powiadomienia)
+	2.7.Uzytkownicy <opcja admin>
+		2.7.1. Wyswietlenie uzytkownikow z haslami.
+			2.7.1.1 Wybor uzytkownika
+				2.7.1.1.1. edycja hasla
+				2.7.1.1.2. edycja innych informacji
+		2.7.2.+/- konta uzytkownikow
+		
+
+//klasa user z dziedziczeniem na student/admin.
+		
+
+/*MAGAZYN----------------------------------------------------------------------------------------------
+
+4.Program zawiera:
+-Obiekt Firma
+-Dane przesyłek i kurierów, magazynierów
+-Tracking przesyłek(miejsce,makswaga,maks objętość)
+
+-Lista pojazdów(spalanie,prędkość,stan techniczny,bagażnik(makswaga,maks objętość))
+-Zarządzanie dostępnymi pojazdami
+
+-Rzeczysta strukutra magazynu zawarta w postaci obiektów(Obiekt klasy Hala,dochód magazynu,zawierająca magazynierów,paczki,i pojazdy,koszt funkcjonowania magazynu)
+-Tracking (subklasa)kurierów(koszt kuriera,jakość kuriera(iledostarczaprzesyłek+),uwagi)
+-System optymalizacji wydatkowej(cały dochód,funkcje informujące o dochodzie danych obiektów)
+
+SUM:
+-zarządzanie finansami firmy
+-opt
+
+1.Założenia:
+aplikacja ma na celu zarządzanie firmą kurierską. Zawarty w niej będzie system przychodów/strat który pomoże nam w sprawnym zarządzaniu wbudowanego systemu manipulacji obiektami podległymi danej organizacji. W zakres możliwości aplikacji wchodzi zwalnianie/zatrudnianie pracowników
+oraz kupno/sprzedaż obiektów podległych firmie(magazyny,pojazdy). W każdym momencie możliwe jest sprawdzenie ogólnych zysków firmy jak i nieefektynych obietków podległych danej placówce. Każdy z obiektów będzie miał przydzielone przesyłki którymi będą się wymieniać.
+
+2.Opis funkcjonalny programu:
+-Tworzenie placówek umieszczonych na planszy
+-Sprawne zarządzanie obiektami firmy
+a)Zatrudnianie/zwalnianie pracowników
+b)Sprzedawanie/Kupywanie magazynów/pojazdów
+c)Monitorowanie/przekierowywanie paczek
+-monitorowanie dochodów placówek i podległych im obiektów*/
