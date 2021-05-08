@@ -285,6 +285,8 @@ class Interface//Button Agregation
             {
                 lookForClosest(ifSmaller, true);
             }
+            break;
+                    
             case ' ':
             {
                 buttonsTab[currentButton].activateButton();
