@@ -16,3 +16,4 @@ void Lecture::readFromFile()
 {
 
 }
+//Komentarz
