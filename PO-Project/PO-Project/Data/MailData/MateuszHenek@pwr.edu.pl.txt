@@ -1,0 +1,5 @@
+-----DATA_OF_MateuszHenek@pwr.edu.pl.txt----
+==========
+sdr=Pierwszy@pwr.edu.pl
+Kutasa_zdjecie.jpg :)
+date=00:45 22-05-2021

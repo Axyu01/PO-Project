@@ -1,12 +1,111 @@
 ﻿#include <iostream>
 #include "Data.h"
+#include "Menu.h"
 #include <string>
+#include <conio.h>
+
+
 
 int main()
 {
-	std::string message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et erat at nisi mattis hendrerit vel sit amet magna. Nulla facilisi. Morbi hendrerit dictum condimentum. Nulla vulputate blandit urna, a gravida ex ornare non. Nunc quis ex urna. Integer vel elementum odio. Duis egestas massa bibendum velit lacinia, sed aliquet lacus auctor.";
-	//std::getline(std::cin,message);
-	Mail test("Francek","Kamil",message);
-	test.viewContents();
+
+	RegisterData regd;
+	UsersData usersd;
+	MailData maild;
+	ChatData chatd;
+
+	Data* data[4] = {&regd, &usersd, &maild, &chatd};
+	
+	Menu men;
+
+	data[1]->readFromFile();
+
+	regd.addSpec("ITE");
+	regd.addSpec("CBE");
+	regd.addSpec("EKA");
+	regd.addSpec("TEL");
+	regd.addSpec("TIN");
+	regd.addSpec("AIR");
+
+	while (true)
+	{
+		
+		men.loginScreen(&usersd);
+
+
+		data[1]->saveToFile();
+		data[2]->saveToFile();
+		
+		men.selectionScreen();
+	}
+	//User uone("Pierwszy@pwr.edu.pl","Pierwszy","password1", "student",&maild, &usersd);
+	//User utwo("Drugi@pwr.edu.pl", "Drugi", "password2", "student", &maild, &usersd);
+	//User uthree("Trzeci@pwr.edu.pl", "Trzeci", "password3", "student", &maild, &usersd);
+
+	//MailBox one("one@pwr.edu.pl", &maild), two("two@pwr.edu.pl", &maild), three("three@pwr.edu.pl", &maild);
+
+	//uone.mbox.sendEmail(&utwo.mbox);
+	//uone.mbox.sendEmail(&uthree.mbox, "Gorace mamuski w twojej okolicy.\n\n Kliknij w mail, aby poznac je wszystkie!\n");
+	//uone.mbox.sendEmail(&utwo.mbox, "Mamo, potrzebuje klej i bibule na jutro.\n\n No ale pani naprawde powiedziala dopiero teraz!\n");
+	//uthree.mbox.sendEmail(&utwo.mbox, "Gorace mamuski w twojej okolicy.\n\n Kliknij w mail, aby poznac je wszystkie!\n");
+	//uthree.mbox.sendEmail(&utwo.mbox, "SEKS SKESKEKSKEKSEKK\n\n");
+
+	/*regd.addSpec("ITE");
+	regd.specs[0]->addCourse("Analiza 2.3");
+	regd.specs[0]->courses[0]->addGroup("Wyklad");
+	regd.specs[0]->courses[0]->groups[0]->addLecture("Wyklad Analiza 2.3", true, 3, Date(2021, 10, 2), 15, 200);
+	regd.specs[0]->courses[0]->addGroup("Cwiczenia");
+	regd.specs[0]->courses[0]->groups[1]->addLecture("Cwiczenia grupa 1", true, 3, Date(2021, 10, 2, 15), 15, 20);
+	regd.specs[0]->courses[0]->groups[1]->addLecture("Cwiczenia grupa 2", true, 3, Date(2021, 10, 2, 15), 15, 20);
+
+	
+		for (auto s : regd.specs)
+		{
+			s->listCourse();
+			for (auto c : s->courses)
+			{
+				std::cout << "  "; 
+				c->listGroup();
+
+				for (auto g : c->groups)
+				{
+					std::cout << "    ";
+					g->listLecture();
+				}
+			}
+		}
+
+		return 0;
+
+
+
+	saver = &usersd;
+
+		saver->readFromFile();
+	
+		Chat test("TEST CHAT");
+
+		UsersData::currentUser = UsersData::userList[0];
+
+		while (true)
+		{
+			test.viewChat();
+			test.sendMessage(UsersData::currentUser);
+		}
+
+
+	int i = 1;
+	while (true)
+	{
+		usersd.userList[1]->mbox.listMail();
+		int it = (_getch() - 48);
+		usersd.userList[1]->mbox.readMail(it);
+	}
+
+	saver->saveToFile();
+	saver = &maild;
+	saver->saveToFile();*/
+
+	return 0;
 }
 

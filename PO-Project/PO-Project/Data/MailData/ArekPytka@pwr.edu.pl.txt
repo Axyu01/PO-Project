@@ -1,0 +1,9 @@
+-----DATA_OF_ArekPytka@pwr.edu.pl.txt----
+==========
+sdr=Pierwszy@pwr.edu.pl
+Chuj dupa cipa cycki esa. JD.
+date=19:11 21-05-2021
+==========
+sdr=MaskaUrbanska@pwr.edu.pl
+Spierdalaj.
+date=20:33 21-05-2021

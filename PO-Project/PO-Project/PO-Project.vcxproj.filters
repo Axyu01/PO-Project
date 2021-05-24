@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Pliki źródłowe">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Pliki zasobów">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Pliki źródłowe\DataFiles">
+      <UniqueIdentifier>{3eb43d69-2a71-4e5e-b358-e725630a3897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\System Files">
+      <UniqueIdentifier>{052b59c7-acd8-4a1b-8998-311e56596d39}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Chat.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatData.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ConsoleGUI.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Course.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Data.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Date.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Funkcje_zapis.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Group.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Lecture.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Mail.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="MailBox.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="MailData.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterData.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Spec.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="UsersData.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Pliki źródłowe\System Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSystem.cpp">
+      <Filter>Pliki źródłowe\System Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Data.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Funkcje_zapis.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <functional>
 
+
 //using namespace std;
 HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 void changeColor(int color)
@@ -285,8 +286,6 @@ class Interface//Button Agregation
             {
                 lookForClosest(ifSmaller, true);
             }
-            break;
-                    
             case ' ':
             {
                 buttonsTab[currentButton].activateButton();
@@ -439,10 +438,15 @@ class Menu
         }
 };
 
-int main()
-{
-    Menu menu;
-    menu.menuFunction();
-    return 0;
-
-}
+//int main()
+//{
+// Menu menu;
+//    menu.menuFunction();
+//
+//    
+//
+//
+//
+//    return 0;
+//
+//}

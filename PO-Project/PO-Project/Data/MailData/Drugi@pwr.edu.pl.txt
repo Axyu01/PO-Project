@@ -1,0 +1,9 @@
+-----DATA_OF_Drugi@pwr.edu.pl.txt----
+==========
+sdr=Trzeci@pwr.edu.pl
+Siema cwelu co u ciebie, jebac ci starom. essa
+date=18:48 21-05-2021
+==========
+sdr=Pierwszy@pwr.edu.pl
+Cwelu oddawaj pieniadze dla mnie. nara.
+date=18:59 21-05-2021
