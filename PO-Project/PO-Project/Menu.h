@@ -3,6 +3,7 @@
 class Menu
 {
 	friend int main();
+	
 protected:
 
 	User* currentUser;
@@ -24,6 +25,10 @@ public:
 	//void selectChat();
 	void selectMail();
 	//void selectCallendar();
+
+	void selectGroup(Course*);
+	void selectLecture(Group*);
+
 };
 
 class MailSystem : public Menu

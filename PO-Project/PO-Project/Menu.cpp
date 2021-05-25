@@ -186,8 +186,163 @@ void Menu::selectRegister()
 	}
 	else
 	{
-		std::cout << std::endl << currentUser->login << " zostal juz zarejestrowany na kierunek " << currentUser->spec->name;
-		_getch();
+		bool going = true;
+		int it = 0;
+		while (going)
+		{
+			system("cls");
+			std::cout << "==LISTA DOSTEPNYCH KURSOW DLA "+ currentUser->spec->name + "==" << std::endl;
+
+			for (auto s : currentUser->spec->courses)
+			{
+				if (s == currentUser->spec->courses.at(it))
+					std::cout << ">>";
+				std::cout << s->name << std::endl;
+			}
+
+			std::cout << "\n0) Go back.";
+
+			char op = _getch();
+			switch (op)
+			{
+			case KEY_DOWN:
+				if (it < currentUser->spec->courses.size() - 1)
+				{
+					it++;
+				}
+				break;
+			case KEY_UP:
+				if (it > 0)
+				{
+					it--;
+				}
+				break;
+			case 13:
+				if (currentUser->spec->courses.size())
+				{	
+					selectGroup(currentUser->spec->courses[it]);
+				}
+				break;
+			case '0':
+				going = false;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void Menu::selectGroup(Course* course)
+{
+
+		bool going = true;
+		int it = 0;
+		while (going)
+		{
+			system("cls");
+			std::cout << "==LISTA DOSTEPNYCH GRUP DLA KURSU " + course->name + "==" << std::endl;
+
+			for (auto g : course->groups)
+			{
+				if (g == course->groups.at(it))
+					std::cout << ">>";
+				std::cout << g->name << std::endl;
+			}
+
+			std::cout << "\n0) Go back.";
+
+			char op = _getch();
+			switch (op)
+			{
+			case KEY_DOWN:
+				if (it < course->groups.size() - 1)
+				{
+					it++;
+				}
+				break;
+			case KEY_UP:
+				if (it > 0)
+				{
+					it--;
+				}
+				break;
+			case 13:
+				if (course->groups.size())
+				{
+					selectLecture(course->groups[it]);
+				}
+				break;
+			case '0':
+				going = false;
+				break;
+			default:
+				break;
+			}
+		}
+}
+
+void Menu::selectLecture(Group* group)
+{
+	bool going = true;
+	int it = 0;
+	while (going)
+	{
+		system("cls");
+		std::cout << "==LISTA DOSTEPNYCH ZAJEC DLA GRUPY" + group->name + "==" << std::endl;
+
+		for (auto l : group->lectures)
+		{
+			if (l == group->lectures.at(it))
+				std::cout << ">>";
+			std::cout << l->name;
+			if (currentUser->isRegistered(l))
+				std::cout << " <- ZAPISANY";
+			std::cout << std::endl;
+		}
+
+		std::cout << "\n0) Go back.";
+
+		char op = _getch();
+		switch (op)
+		{
+		case KEY_DOWN:
+			if (it < group->lectures.size() - 1)
+			{
+				it++;
+			}
+			break;
+		case KEY_UP:
+			if (it > 0)
+			{
+				it--;
+			}
+			break;
+		case 13:
+
+			if (group->lectures.size())
+			{
+				if (!(currentUser->isRegistered(group->lectures[it])))
+				{
+					if (group->userRegisteredInGroup(currentUser))
+					{
+						std::cout << "\n\nJestes juz zapisany na zajecia z tej grupy. Wypisz sie aby wybrac inne.\n";
+						_getch();
+					}
+					else if(!(currentUser->isRegistered(group->lectures[it])))
+						group->lectures[it]->addParticipant(currentUser);
+				}
+				else
+					group->lectures[it]->delParticipant(currentUser);
+			}
+
+			break;
+		case '0':
+			going = false;
+			break;
+		default:
+			break;
+		}
 	}
 }
 

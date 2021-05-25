@@ -47,6 +47,14 @@ User* UsersData::verifyUser(std::string lgn, std::string pwrd)
 	return nullptr;
 }
 
+User* UsersData::findUser(std::string unm)
+{
+	for (auto u : userList)
+	{
+		if (u->login == unm) return u;
+	}
+	return nullptr;
+}
 
 void UsersData::registerUser()
 {
@@ -192,7 +200,6 @@ void UsersData::readFromFile()
 			break;
 		case 0:
 			type = line;
-
 
 			userList.push_back(new User(em, log, pwrd, type));
 

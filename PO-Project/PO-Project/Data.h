@@ -60,7 +60,7 @@ public:
 
 	bool userExists(std::string);
 	User* verifyUser(std::string, std::string);
-
+	static User* findUser(std::string);
 
 	void registerUser();
 	User* loginUser();
@@ -72,6 +72,7 @@ public:
 class RegisterData : public Data
 {
 	friend class Menu;
+	friend int main();
 	static std::vector<Spec*> specs;
 
 public:
@@ -163,10 +164,11 @@ public:
 	void readFromFile();
 };
 
-class Lecture : public Data
+class Lecture
 {
 	friend int main();
 	friend class Group;
+	friend class Menu;
 
 	std::string name;
 	bool isEven;
@@ -182,17 +184,21 @@ class Lecture : public Data
 
 public:
 
-	Lecture(std::string, bool, int, Date, int, int);
+	Lecture(std::string, bool, int, Date, int, int, int = 0);
 
-	void saveToFile();
-	void readFromFile();
+	void addParticipant(User*);
+	void delParticipant(User*);
+
+	void saveToFile(std::string, std::string, std::string);
+	void readFromFile(std::string, std::string, std::string);
 
 };
 
-class Group : public Data
+class Group
 {
 	friend int main();
 	friend class Course;
+	friend class Menu;
 
 	std::string name;
 	std::vector<Lecture*> lectures;
@@ -200,19 +206,21 @@ class Group : public Data
 public:
 	Group(std::string);
 
-	void addLecture(std::string, bool, int, Date, int, int);
+	void addLecture(std::string, bool, int, Date, int, int, int);
 	void delLecture();
 
 	void listLecture();
+	bool userRegisteredInGroup(User*);
 
-	void saveToFile();
-	void readFromFile();
+	void saveToFile(std::string, std::string);
+	void readFromFile(std::string, std::string);
 };
 
-class Course : public Data
+class Course
 {
 	friend int main();
 	friend class Spec;
+	friend class Menu;
 
 	std::string name;
 	std::vector<Group*> groups;
@@ -225,19 +233,21 @@ public:
 
 	void listGroup();
 
-	void saveToFile();
-	void readFromFile();
+	void saveToFile(std::string);
+	void readFromFile(std::string);
 
 };
 
-class Spec : public Data
+class Spec
 {
 	friend int main();
 	friend class RegisterData;
 	friend class Menu;
+	friend class UsersData;
 
 	std::string name;
 	std::vector<Course*> courses;
+	std::vector<User*> students;
 
 public:
 	Spec(std::string);
@@ -245,12 +255,13 @@ public:
 	void addCourse(std::string);
 	void delCourse();
 
+	void addStudent(User*);
+
 	void listCourse();
 
 	void saveToFile();
 	void readFromFile();
 };
-
 
 class Mail : public Data
 {
@@ -306,6 +317,8 @@ class User
 	friend class UsersData;
 	friend class Chat;
 	friend class Menu;
+	friend class Lecture;
+	friend class Spec;
 
 	friend int main();
 
@@ -326,13 +339,15 @@ public:
 	User(std::string, std::string, std::string, std::string);
 
 	void joinSpec(Spec*);
-	void joinLecture(std::string);
+	void joinLecture(Lecture*);
+	void leaveLecture(Lecture*);
 
-private:
+
 
 	bool isRegistered();
+	bool isRegistered(Lecture*);
 
-public:
+
 
 	//void addEvent();
 	//void addEvent(Date);

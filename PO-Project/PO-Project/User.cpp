@@ -15,16 +15,43 @@ User::User(std::string em, std::string log, std::string pwrd, std::string tp)
 void User::joinSpec(Spec* sp)
 {
 	spec = sp;
+	sp->addStudent(this);
 }
 
 
-void User::joinLecture(std::string nm)
+void User::joinLecture(Lecture* lec)
+{
+	userLectures.push_back(lec);
+}
+
+void User::leaveLecture(Lecture* lec)
 {
 
+	for (int i = 0; i < userLectures.size(); i++)
+	{
+
+		if (userLectures[i] == lec)
+		{
+			userLectures.erase(userLectures.begin() + i);
+		}
+
+	}
 }
 
 bool User::isRegistered()
 {
 	if (spec == nullptr) return false;
 	return true;
+}
+
+bool User::isRegistered(Lecture* lec)
+{
+	for (auto l : userLectures)
+	{
+		if (lec == l)
+		{
+			return true;
+		}
+	}
+	return false;
 }

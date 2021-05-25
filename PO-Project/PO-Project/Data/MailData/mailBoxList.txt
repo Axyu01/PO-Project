@@ -1,10 +1,3 @@
 Pierwszy@pwr.edu.pl
-Drugi@pwr.edu.pl
-Trzeci@pwr.edu.pl
-kurwa@pwr.edu.pl
-chuu@pwr.edu.pl
-chuj@pwr.edu.pl
 ArekPytka@pwr.edu.pl
-MaskaUrbanska@pwr.edu.pl
-MateuszHenek@pwr.edu.pl
-dd@pwr.edu.pl
+KleksAleks@pwr.edu.pl

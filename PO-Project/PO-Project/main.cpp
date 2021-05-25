@@ -14,18 +14,23 @@ int main()
 	MailData maild;
 	ChatData chatd;
 
-	Data* data[4] = {&regd, &usersd, &maild, &chatd};
-	
+	Data* data[4] = { &regd, &usersd, &maild, &chatd };
+
 	Menu men;
 
 	data[1]->readFromFile();
+	data[0]->readFromFile();
 
-	regd.addSpec("ITE");
-	regd.addSpec("CBE");
-	regd.addSpec("EKA");
-	regd.addSpec("TEL");
-	regd.addSpec("TIN");
-	regd.addSpec("AIR");
+	//regd.addSpec("ITE");
+	//regd.specs[0]->addCourse("Analiza Matematyczna 2");
+	//regd.specs[0]->courses[0]->addGroup("Wyklad");
+	//regd.specs[0]->courses[0]->groups[0]->addLecture("Wyklad - M.Wodecki", true, 5, Date(2021, 10, 1), 200, 0);
+	//regd.specs[0]->courses[0]->groups[0]->addLecture("Wyklad - J.Jureczko", true, 5, Date(2021, 10, 1, 14,15), 200, 0);
+	//regd.addSpec("CBE");
+	//regd.addSpec("EKA");
+	//regd.addSpec("TEL");
+	//regd.addSpec("TIN");
+	//regd.addSpec("AIR");
 
 	while (true)
 	{
@@ -33,10 +38,15 @@ int main()
 		men.loginScreen(&usersd);
 
 
+		data[0]->saveToFile();
 		data[1]->saveToFile();
 		data[2]->saveToFile();
 		
 		men.selectionScreen();
+
+		data[0]->saveToFile();
+		data[1]->saveToFile();
+		data[2]->saveToFile();
 	}
 	//User uone("Pierwszy@pwr.edu.pl","Pierwszy","password1", "student",&maild, &usersd);
 	//User utwo("Drugi@pwr.edu.pl", "Drugi", "password2", "student", &maild, &usersd);
