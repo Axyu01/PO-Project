@@ -38,6 +38,14 @@ void User::leaveLecture(Lecture* lec)
 	}
 }
 
+void User::leaveSpec()
+{
+	if (spec != nullptr)
+	{
+		spec = nullptr;
+	}
+}
+
 bool User::isRegistered()
 {
 	if (spec == nullptr) return false;

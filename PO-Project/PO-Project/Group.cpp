@@ -16,6 +16,14 @@ void Group::delLecture()
 
 }
 
+void Group::delStudent(User* st)
+{
+	for (auto l : lectures)
+	{
+		l->delParticipant(st);
+	}
+}
+
 void Group::listLecture()
 {
 	for (auto l : lectures)
@@ -85,6 +93,27 @@ void Group::readFromFile(std::string specname, std::string coursename)
 {
 	std::fstream plik;
 
+	if (!is_path_exists("Data"))
+	{
+		make_directory("Data");
+	}
+	if (!is_path_exists("Data/RegisterData"))
+	{
+		make_directory("Data/RegisterData");
+	}
+	if (!is_path_exists("Data/RegisterData/" + specname))
+	{
+		make_directory("Data/RegisterData/" + specname);
+	}
+	if (!is_path_exists("Data/RegisterData/" + specname + "/" + coursename))
+	{
+		make_directory("Data/RegisterData/" + specname + "/" + coursename);
+	}
+	if (!is_path_exists("Data/RegisterData/" + specname + "/" + coursename + "/" + name))
+	{
+		make_directory("Data/RegisterData/" + specname + "/" + coursename + "/" + name);
+	}
+
 	plik.open("Data/RegisterData/" + specname + "/" + coursename + "/" + name + "/"+ name+"LectureList.txt", std::ios::in);
 	if (plik.good() == false)
 	{
@@ -94,14 +123,21 @@ void Group::readFromFile(std::string specname, std::string coursename)
 
 	std::string line;
 
+	int which_lecture = -1;
+
 	while (std::getline(plik, line))
 	{
 		std::fstream data;
 
+		if (!is_path_exists("Data/RegisterData/" + specname + "/" + coursename + "/" + name + "/" + line))
+		{
+			make_directory("Data/RegisterData/" + specname + "/" + coursename + "/" + name + "/" + line);
+		}
+
 		data.open("Data/RegisterData/" + specname + "/" + coursename + "/" + name + "/" +line +"/"+ line + "Data.txt", std::ios::in);
 		if (plik.good() == false)
 		{
-			std::cout << "Wystapil blad z odczytywaniem pliku. Sprawdz czy " + line + ".txt istnieje." << std::endl;
+			std::cout << "Wystapil blad z odczytywaniem pliku. Sprawdz czy " + line + "Data.txt istnieje." << std::endl;
 			exit(0);
 		}
 
@@ -110,7 +146,7 @@ void Group::readFromFile(std::string specname, std::string coursename)
 
 		std::string nm, ev, wd,sd,lc,ul,uc;
 		Date temp;
-		int which_lecture=-1;
+
 		
 
 		while (std::getline(data, verse))
@@ -151,13 +187,11 @@ void Group::readFromFile(std::string specname, std::string coursename)
 			}
 
 			line_nr++;
-			std::cout << "Pomyslnie wczytano zajecia z pliku " + line + ".txt" << std::endl;
 		}
+		std::cout << "Pomyslnie wczytano zajecia z pliku " + line + ".txt" << std::endl;
 		data.close();
-		std::cout << "Pomyslnie wczytano grupe z pliku " + name + ".txt" << std::endl;
-
 	}
-
+	std::cout << "Pomyslnie wczytano grupe z pliku " + name + ".txt" << std::endl;
 
 	plik.close();
 }

@@ -59,6 +59,15 @@ void RegisterData::readFromFile()
 {
 	std::fstream plik;
 
+	if (!is_path_exists("Data"))
+	{
+		make_directory("Data");
+	}
+	if (!is_path_exists("Data/RegisterData"))
+	{
+		make_directory("Data/RegisterData");
+	}
+
 	plik.open("Data/RegisterData/specsList.txt", std::ios::in);
 	if (plik.good() == false)
 	{

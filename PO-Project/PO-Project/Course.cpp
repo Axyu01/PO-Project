@@ -12,6 +12,14 @@ void Course::addGroup(std::string nm)
 void Course::delGroup()
 {}
 
+void Course::delStudent(User* st)
+{
+	for (auto g : groups)
+	{
+		g->delStudent(st);
+	}
+}
+
 void Course::listGroup()
 {
 	for (auto g : groups)
@@ -66,6 +74,23 @@ void Course::saveToFile(std::string specname)
 void Course::readFromFile(std::string specname)
 {
 	std::fstream plik;
+
+	if (!is_path_exists("Data"))
+	{
+		make_directory("Data");
+	}
+	if (!is_path_exists("Data/RegisterData"))
+	{
+		make_directory("Data/RegisterData");
+	}
+	if (!is_path_exists("Data/RegisterData/" + specname))
+	{
+		make_directory("Data/RegisterData/" + specname);
+	}
+	if (!is_path_exists("Data/RegisterData/" + specname + "/" + name))
+	{
+		make_directory("Data/RegisterData/" + specname + "/" + name);
+	}
 
 	plik.open("Data/RegisterData/" + specname +"/" + name +"/" + name+ "GroupList.txt", std::ios::in);
 	if (plik.good() == false)

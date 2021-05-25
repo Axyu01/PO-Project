@@ -9,9 +9,9 @@ Menu::Menu()
 	:currentUser{nullptr}
 {}
 
-void Menu::loginScreen(UsersData* ud)
+void Menu::loginScreen(UsersData* ud, bool& going)
 {
-	while (currentUser==nullptr)
+	while (currentUser==nullptr && going == true)
 	{
 		system("cls");
 		std::cout << "===LOGIN===\n\n";
@@ -32,7 +32,7 @@ void Menu::loginScreen(UsersData* ud)
 			ud->registerUser();
 			break;
 		case '0':
-			exit(0);
+			going = false;
 			break;
 		default:
 			break;
@@ -53,7 +53,7 @@ bool Menu::isLoggedIn()
 
 void Menu::drawMenu(int it)
 {
-	std::vector<std::string> optsTxt = { "Poczta", "Zapisy", "Wyloguj" };
+	std::vector<std::string> optsTxt = { "Poczta", "Zapisy", "Wypisz z kierunku", "Wyloguj" };
 
 	system("cls");
 	std::cout << "===WITAMY " << currentUser->login << "===\n\n";
@@ -241,7 +241,7 @@ void Menu::selectGroup(Course* course)
 		while (going)
 		{
 			system("cls");
-			std::cout << "==LISTA DOSTEPNYCH GRUP DLA KURSU " + course->name + "==" << std::endl;
+			std::cout << "==LISTA DOSTEPNYCH GRUP DLA KURSU \"" + course->name + "\"==" << std::endl;
 
 			for (auto g : course->groups)
 			{
@@ -289,7 +289,7 @@ void Menu::selectLecture(Group* group)
 	while (going)
 	{
 		system("cls");
-		std::cout << "==LISTA DOSTEPNYCH ZAJEC DLA GRUPY" + group->name + "==" << std::endl;
+		std::cout << "==LISTA DOSTEPNYCH ZAJEC DLA GRUPY \"" + group->name + "\"==" << std::endl;
 
 		for (auto l : group->lectures)
 		{
@@ -320,7 +320,7 @@ void Menu::selectLecture(Group* group)
 			break;
 		case 13:
 
-			if (group->lectures.size())
+			if (group->lectures.size())	//dodaje u¿ytkownika do zajêæ, je¿eli jest niezapisany, oraz niezapisany na ¿adne inne zajêcia w grupie
 			{
 				if (!(currentUser->isRegistered(group->lectures[it])))
 				{
@@ -359,7 +359,7 @@ void Menu::selectionScreen()
 		{
 		case KEY_DOWN:
 
-			if (it < 2)
+			if (it < 3)
 			{
 				it++;
 			}
@@ -376,8 +376,31 @@ void Menu::selectionScreen()
 			select(it);
 			break;
 		default:
-			std::cout << "\n\nPodano nieobslugiwany operator.";
 			break;
+		}
+	}
+}
+void Menu::leaveSpec()
+{
+	if (currentUser->isRegistered()) {
+		bool going = true;
+		system("cls");
+		std::cout << "Czy na pewno wypisac z " << currentUser->spec->name << "?\n(Y/N)";
+		while (going)
+		{
+			char op = _getch();
+			switch (op)
+			{
+			case 'y':
+				std::cout << "Pomyslnie wypisano " << currentUser->login << " z kierunku" << currentUser->spec->name;
+				currentUser->spec->delStudent(currentUser);
+				currentUser->leaveSpec();
+				going = false;
+				break;
+			case 'n':
+				going = false;
+				break;
+			}
 		}
 	}
 }
@@ -391,6 +414,9 @@ void Menu::select(int op)
 		break;
 	case 1:
 		selectRegister();
+		break;
+	case 2:
+		leaveSpec();
 		break;
 	default:
 		logOut();

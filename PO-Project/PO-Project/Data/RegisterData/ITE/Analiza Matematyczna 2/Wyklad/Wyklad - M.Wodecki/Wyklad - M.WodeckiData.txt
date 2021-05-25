@@ -7,5 +7,3 @@ Wyklad - M.Wodecki
 0
 0
 ==PARTICIPANTS_LIST_BY_LOGIN==
-ArekPytka
-KleksAleks

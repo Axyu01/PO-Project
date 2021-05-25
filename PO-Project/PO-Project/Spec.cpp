@@ -21,6 +21,22 @@ void Spec::addStudent(User* st)
 	students.push_back(st);
 }
 
+void Spec::delStudent(User* st)
+{
+	for (auto c : courses)
+	{
+		c->delStudent(st);
+	}
+
+	for (int i=0;i<students.size();i++)
+	{
+		if (students[i] = st)
+		{
+			students.erase(students.begin() + i);
+		}
+	}
+}
+
 void Spec::listCourse()
 {
 	for (auto c : courses)
@@ -85,6 +101,20 @@ void Spec::saveToFile()
 void Spec::readFromFile()
 {
 	std::fstream plik;
+
+
+	if (!is_path_exists("Data"))
+	{
+		make_directory("Data");
+	}
+	if (!is_path_exists("Data/RegisterData"))
+	{
+		make_directory("Data/RegisterData");
+	}
+	if (!is_path_exists("Data/RegisterData/" + name))
+	{
+		make_directory("Data/RegisterData/" + name);
+	}
 
 	plik.open("Data/RegisterData/" + name +"/"+ name+ "CourseList.txt", std::ios::in);
 	if (plik.good() == false)

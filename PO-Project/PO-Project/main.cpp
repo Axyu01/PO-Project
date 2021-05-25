@@ -20,27 +20,33 @@ int main()
 
 	data[1]->readFromFile();
 	data[0]->readFromFile();
-
+	if(true)
+	{
+		std::cout << "\nHere";
+	}
 	//regd.addSpec("ITE");
 	//regd.specs[0]->addCourse("Analiza Matematyczna 2");
 	//regd.specs[0]->courses[0]->addGroup("Wyklad");
 	//regd.specs[0]->courses[0]->groups[0]->addLecture("Wyklad - M.Wodecki", true, 5, Date(2021, 10, 1), 200, 0);
-	//regd.specs[0]->courses[0]->groups[0]->addLecture("Wyklad - J.Jureczko", true, 5, Date(2021, 10, 1, 14,15), 200, 0);
+	//regd.specs[0]->courses[0]->groups[1]->addLecture("Cwiczenia - Joanna Welyczko", true, 3, Date(2021, 10, 1, 14,15), 200, 0, 0);
 	//regd.addSpec("CBE");
 	//regd.addSpec("EKA");
 	//regd.addSpec("TEL");
 	//regd.addSpec("TIN");
 	//regd.addSpec("AIR");
 
-	while (true)
+	bool going = true;
+	while (going)
 	{
 		
-		men.loginScreen(&usersd);
+		men.loginScreen(&usersd, going);
 
 
 		data[0]->saveToFile();
 		data[1]->saveToFile();
 		data[2]->saveToFile();
+
+		if (going == false) return 0;
 		
 		men.selectionScreen();
 

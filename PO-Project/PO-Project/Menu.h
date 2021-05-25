@@ -13,7 +13,7 @@ protected:
 public:
 
 	Menu();
-	void loginScreen(UsersData* ud);
+	void loginScreen(UsersData* ud, bool&);
 	void logOut();
 
 	virtual void selectionScreen();
@@ -22,6 +22,7 @@ public:
 	bool isLoggedIn();
 	void drawMenu(int);
 	void selectRegister();
+	void leaveSpec();
 	//void selectChat();
 	void selectMail();
 	//void selectCallendar();

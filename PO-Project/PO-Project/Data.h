@@ -146,7 +146,7 @@ public:
 //	int day;
 //};
 
-class Chat : public Data
+class Chat
 {
 	friend class ChatData;
 
@@ -209,6 +209,8 @@ public:
 	void addLecture(std::string, bool, int, Date, int, int, int);
 	void delLecture();
 
+	void delStudent(User*);
+
 	void listLecture();
 	bool userRegisteredInGroup(User*);
 
@@ -230,6 +232,8 @@ public:
 
 	void addGroup(std::string);
 	void delGroup();
+
+	void delStudent(User*);
 
 	void listGroup();
 
@@ -256,6 +260,7 @@ public:
 	void delCourse();
 
 	void addStudent(User*);
+	void delStudent(User*);
 
 	void listCourse();
 
@@ -263,7 +268,7 @@ public:
 	void readFromFile();
 };
 
-class Mail : public Data
+class Mail
 {
 	friend class MailBox;
 
@@ -285,7 +290,7 @@ public:
 
 };
 
-class MailBox : public Data
+class MailBox
 {
 
 	friend class MailData;
@@ -329,7 +334,7 @@ class User
 
 	std::string userType;
 
-	const Spec* spec = nullptr;
+	Spec* spec = nullptr;
 	std::vector<Lecture*> userLectures;
 	//std::vector<Event*> customEvents;
 
@@ -341,6 +346,7 @@ public:
 	void joinSpec(Spec*);
 	void joinLecture(Lecture*);
 	void leaveLecture(Lecture*);
+	void leaveSpec();
 
 
 

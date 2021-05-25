@@ -23,7 +23,6 @@ void Lecture::delParticipant(User* usr)
 			participants.erase(participants.begin() + i);
 			usr->leaveLecture(this);
 		}
-
 	}
 }
 
