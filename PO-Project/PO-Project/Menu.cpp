@@ -53,7 +53,7 @@ bool Menu::isLoggedIn()
 
 void Menu::drawMenu(int it)
 {
-	std::vector<std::string> optsTxt = { "Poczta", "Zapisy", "Wypisz z kierunku", "Wyloguj" };
+	std::vector<std::string> optsTxt = { "Poczta", "Zapisy", "Wypisz z kierunku", "Przegladaj Chat", "Wyloguj" };
 
 	system("cls");
 	std::cout << "===WITAMY " << currentUser->login << "===\n\n";
@@ -359,7 +359,7 @@ void Menu::selectionScreen()
 		{
 		case KEY_DOWN:
 
-			if (it < 3)
+			if (it < 4)
 			{
 				it++;
 			}
@@ -380,6 +380,7 @@ void Menu::selectionScreen()
 		}
 	}
 }
+
 void Menu::leaveSpec()
 {
 	if (currentUser->isRegistered()) {
@@ -405,6 +406,90 @@ void Menu::leaveSpec()
 	}
 }
 
+void Menu::selectChat()
+{
+	bool going = true;
+	int it = 0;
+	while (going)
+	{
+		system("cls");
+
+		std::cout << "==LISTA DOSTEPNYCH CHATOW DLA " << currentUser->login << "==" << std::endl;
+		for (auto l : currentUser->userLectures)
+		{
+			if (l == currentUser->userLectures.at(it))
+				std::cout << ">>";
+			std::cout << l->name << std::endl;
+		}
+
+		std::cout << "\n0) Go back.";
+
+		char op = _getch();
+
+		switch (op)
+		{
+		case KEY_DOWN:
+
+			if (it < currentUser->userLectures.size()-1)
+			{
+				it++;
+			}
+			break;
+
+		case KEY_UP:
+			if (it > 0)
+			{
+				it--;
+			}
+			break;
+
+		case 13:
+			openChat(&currentUser->userLectures.at(it)->lectureChat);
+			break;
+		case '0':
+			going = false;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Menu::openChat(Chat*ch)
+{
+	system("cls");
+	ch->viewChat();
+
+	std::cin.ignore();
+
+	bool going = true;
+	std::string msg;
+
+	while(going)
+	{ 
+
+		char op = _getch();
+		switch (op)
+		{
+		case 13:
+			msg.clear();
+
+			std::getline(std::cin, msg);
+			if (msg.size())
+			{
+				ch->sendMessage(currentUser, msg);
+				system("cls");
+				ch->viewChat();
+			}
+			break;
+		case '0':
+			going = false;
+			break;
+		}
+	
+	}
+}
+
 void Menu::select(int op)
 {
 	switch (op)
@@ -417,6 +502,9 @@ void Menu::select(int op)
 		break;
 	case 2:
 		leaveSpec();
+		break;
+	case 3:
+		selectChat();
 		break;
 	default:
 		logOut();

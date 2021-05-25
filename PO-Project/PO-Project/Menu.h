@@ -1,5 +1,14 @@
 #pragma once
 #include "Data.h"
+
+//////////////////////////////////////////////////////////////////
+//																//
+//																//
+//		TA KLASA JEST TYLKO DLA DEBUGOWANIA BACKENDOWEGO		//
+//				TO NIE JEST FINALNE NARZEDZIE					//
+//																//
+//////////////////////////////////////////////////////////////////
+
 class Menu
 {
 	friend int main();
@@ -23,20 +32,12 @@ public:
 	void drawMenu(int);
 	void selectRegister();
 	void leaveSpec();
-	//void selectChat();
+	void selectChat();
+	void openChat(Chat*);
 	void selectMail();
 	//void selectCallendar();
 
 	void selectGroup(Course*);
 	void selectLecture(Group*);
 
-};
-
-class MailSystem : public Menu
-{
-public:
-	MailSystem();
-	void viewMailBox();
-	void viewMailContents();
-	void sendMail();
 };

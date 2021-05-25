@@ -14,12 +14,13 @@ int main()
 	MailData maild;
 	ChatData chatd;
 
-	Data* data[4] = { &regd, &usersd, &maild, &chatd };
+	Data* data[4] = { &usersd ,&regd, &chatd ,&maild };
 
 	Menu men;
 
-	data[1]->readFromFile();
 	data[0]->readFromFile();
+	data[1]->readFromFile();
+	data[2]->readFromFile();
 	if(true)
 	{
 		std::cout << "\nHere";
@@ -45,6 +46,7 @@ int main()
 		data[0]->saveToFile();
 		data[1]->saveToFile();
 		data[2]->saveToFile();
+		data[3]->saveToFile();
 
 		if (going == false) return 0;
 		
@@ -53,6 +55,7 @@ int main()
 		data[0]->saveToFile();
 		data[1]->saveToFile();
 		data[2]->saveToFile();
+		data[3]->saveToFile();
 	}
 	//User uone("Pierwszy@pwr.edu.pl","Pierwszy","password1", "student",&maild, &usersd);
 	//User utwo("Drugi@pwr.edu.pl", "Drugi", "password2", "student", &maild, &usersd);

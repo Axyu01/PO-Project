@@ -7,11 +7,9 @@ Chat::Chat(std::string name)
 	ChatData::chatList.push_back(this);
 }
 
-void Chat::sendMessage(User* us)
+void Chat::sendMessage(User* us, std::string txt)
 {
-	std::string txt;
-
-	std::getline(std::cin, txt);
+	//std::getline(std::cin, txt);
 
 	Date time;
 	txt.insert(0, "<" + us->login + "> " + time.toString() + "\n");
@@ -30,6 +28,7 @@ void Chat::viewChat()
 	}
 
 }
+
 
 
 

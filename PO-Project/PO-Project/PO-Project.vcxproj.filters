@@ -75,9 +75,6 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Pliki źródłowe\System Files</Filter>
     </ClCompile>
-    <ClCompile Include="MailSystem.cpp">
-      <Filter>Pliki źródłowe\System Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data.h">

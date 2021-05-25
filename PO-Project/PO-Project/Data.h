@@ -96,6 +96,8 @@ class ChatData : public Data
 public:
 	ChatData();
 
+	static Chat* chatExists(std::string);
+
 	void saveToFile();
 	void readFromFile();
 };
@@ -156,7 +158,7 @@ class Chat
 public:
 
 	Chat(std::string);
-	void sendMessage(User*);
+	void sendMessage(User*, std::string);
 	void viewChat();
 
 

@@ -150,7 +150,6 @@
     <ClCompile Include="Lecture.cpp" />
     <ClCompile Include="Mail.cpp" />
     <ClCompile Include="MailBox.cpp" />
-    <ClCompile Include="MailSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MailData.cpp" />
     <ClCompile Include="Menu.cpp" />
