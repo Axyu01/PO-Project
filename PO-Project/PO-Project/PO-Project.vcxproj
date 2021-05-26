@@ -140,11 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ConsoleGUI.cpp" />
+    <ClCompile Include="CallendarData.cpp" />
     <ClCompile Include="Chat.cpp" />
     <ClCompile Include="ChatData.cpp" />
     <ClCompile Include="Course.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Date.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="Funkcje_zapis.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="Lecture.cpp" />

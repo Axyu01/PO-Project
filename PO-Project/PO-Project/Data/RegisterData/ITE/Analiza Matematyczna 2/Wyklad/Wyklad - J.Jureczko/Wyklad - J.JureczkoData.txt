@@ -3,8 +3,8 @@ Wyklad - J.Jureczko
 1
 5
 14:15 01-10-2021
+15
 200
-0
 0
 ==PARTICIPANTS_LIST_BY_LOGIN==
 KleksAleks

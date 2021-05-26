@@ -3,7 +3,13 @@
 Lecture::Lecture(std::string nn, bool ev, int wd, Date sd, int lc, int ul, int uc)
 	: name{ nn }, isEven{ ev }, weekDay{ wd }, startDate{ sd }, lectureCount{ lc }, userLimit{ ul }, userCount{ uc }
 {
+	Date temp = startDate;
 
+	for (int i = 0; i < lectureCount; i++)
+	{
+		temp.offsetDaysBy(7);
+		CallendarData::uniEvents.push_back(new Event(name, temp, "Zajecia: " +name));
+	}
 }
 
 void Lecture::addParticipant(User* usr)

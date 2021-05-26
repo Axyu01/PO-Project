@@ -3,7 +3,7 @@ Cwiczenia - Adrian Dacko
 1
 3
 07:30 01-10-2021
+15
 30
-0
 0
 ==PARTICIPANTS_LIST_BY_LOGIN==

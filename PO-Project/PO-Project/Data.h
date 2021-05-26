@@ -36,9 +36,29 @@ public:
 	void changeDate(int, int, int, int, int);
 	void changeDate(int, int, int, int);
 	void changeDate(int, int);
+	void offsetDaysBy(int);
+	void roundDate();
+	bool isLeapYear();
 	std::string toString();
 	void printDate();
 };
+
+class Event
+{
+	std::string eventName;
+	Date eventDate;
+	std::string description;
+
+public:
+	Event(std::string, Date);
+	Event(std::string, Date, std::string);
+};
+
+//struct Day
+//{
+//	Event ev;
+//	int nr;
+//};
 
 class UsersData : public Data 
 {
@@ -118,34 +138,20 @@ public:
 
 
 };
-//
-//class CallendarData :public Data
-//{
-//	std::vector<Event> uniEvents;
-//	std::vector<Day> days;
-//
-//public:
-//	CallendarData();
-//
-//	void saveToFile();
-//	void readFromFile();
-//};
 
-class Event
+class CallendarData :public Data
 {
-	std::string eventName;
-	Date eventDate;
-	std::string description;
+	friend class Event;
+	friend class Lecture;
+
+	static std::vector<Event*> uniEvents;
+	//std::vector<Day> days;
 
 public:
-	Event(std::string, Date);
-	Event(std::string, Date, std::string);
-};
+	CallendarData();
 
-struct Day
-{
-	Event ev;
-	int day;
+	void saveToFile();
+	void readFromFile();
 };
 
 class Chat
@@ -169,6 +175,7 @@ public:
 class Lecture
 {
 	friend class Group;
+	friend class User;
 	friend class Menu;
 
 	std::string name;
@@ -338,7 +345,8 @@ class User
 
 	Spec* spec = nullptr;
 	std::vector<Lecture*> userLectures;
-	//std::vector<Event*> customEvents;
+	std::vector<Event*> customEvents;
+	std::vector<Event*> lectureEvents;
 
 public:
 

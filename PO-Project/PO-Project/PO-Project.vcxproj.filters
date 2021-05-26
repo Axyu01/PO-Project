@@ -75,6 +75,12 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Pliki źródłowe\System Files</Filter>
     </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="CallendarData.cpp">
+      <Filter>Pliki źródłowe\DataFiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data.h">

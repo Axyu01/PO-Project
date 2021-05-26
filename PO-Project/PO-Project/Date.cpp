@@ -28,6 +28,7 @@ void Date::changeDate(int min, int hh, int dd, int mm, int yy)
 	day = dd;
 	month = mm;
 	year = yy;
+	roundDate();
 }
 
 void Date::changeDate(int min, int hh, int dd, int mm)		//prze³adowanie dla zmiany tylko godziny i daty
@@ -36,16 +37,106 @@ void Date::changeDate(int min, int hh, int dd, int mm)		//prze³adowanie dla zmia
 	hour = hh;
 	day = dd;
 	month = mm;
+	roundDate();
 }
 
 void Date::changeDate(int min, int hh)			//prze³adowanie dla zmiany samej godziny
 {
 	minute = min;
 	hour = hh;
+	roundDate();
+}
+
+void Date::offsetDaysBy(int dd)
+{
+	day += dd;
+	roundDate();
 }
 
 void Date::printDate() {
 	std::cout << std::setw(2) << std::setfill('0') << hour << ":" << std::setw(2) << std::setfill('0') << minute << std::setw(1) << "   " << std::setw(2) << day << "-" << std::setw(2) << std::setfill('0') << month << "-" << year;
+}
+
+void Date::roundDate()
+{
+	bool going = true;
+	while (going)
+	{
+		if (month > 12)
+		{
+			year++;
+			month -= 12;
+		}
+
+		if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 1 || month == 12)
+		{
+			if (day > 31)
+			{
+				month++;
+				day -= 31;
+				continue;
+			}
+		}
+
+		if (month == 4 || month == 6 || month == 9 || month == 7 || month == 11)
+		{
+			if (day > 30)
+			{
+				month++;
+				day -= 30;
+				continue;
+			}
+		}
+
+		if (month == 2)
+		{
+			if (!isLeapYear() && day > 28)
+			{
+				month++;
+				day -= 28;
+				continue;
+			}
+			else if (isLeapYear() && day > 29)
+			{
+				month++;
+				day -= 29;
+				continue;
+			}
+
+		}
+
+		if (hour >= 24)
+		{
+			day++;
+			hour -= 24;
+			continue;
+		}
+
+		if (minute >= 60)
+		{
+			hour++;
+			minute -= 60;
+			continue;
+		}
+
+		going = false;
+	}
+}
+
+bool Date::isLeapYear()
+{
+	if (!(year % 4))
+	{
+		if (!(year % 100))
+		{
+			if (!(year % 400))
+				return true;
+		}
+		else
+			return true;
+
+	}
+	return false;
 }
 
 std::string Date::toString() 

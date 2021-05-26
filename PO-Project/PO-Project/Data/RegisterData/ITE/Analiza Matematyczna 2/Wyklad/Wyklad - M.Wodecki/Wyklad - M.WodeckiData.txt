@@ -3,8 +3,8 @@ Wyklad - M.Wodecki
 1
 5
 12:00 01-10-2021
+15
 200
-0
 0
 ==PARTICIPANTS_LIST_BY_LOGIN==
 ArekPytka
