@@ -33,7 +33,7 @@ public:
 	void selectChat();
 	void openChat(Chat*);
 	void selectMail();
-	//void selectCallendar();
+	void selectCallendar();
 
 	void selectGroup(Course*);
 	void selectLecture(Group*);

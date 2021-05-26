@@ -19,7 +19,7 @@ void Mail::viewContents()
 	system("cls");
 	std::cout<< "From: " << std::setw(12) << std::internal << std::setfill(' ') << sender << "\nTo: " << std::setw(12) << std::internal << std::setfill(' ') << reciever;
 	std::cout << "\n\n\t" << std::setw(12) << text << "\n\n" << "Created and sent: ";
-	date.printDate();
+	date.printFullDate();
 
 	_getch();
 }

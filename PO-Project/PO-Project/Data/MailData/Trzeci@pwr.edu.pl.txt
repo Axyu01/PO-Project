@@ -1,9 +1,0 @@
------DATA_OF_Trzeci@pwr.edu.pl.txt----
-==========
-sdr=Pierwszy@pwr.edu.pl
-Gorace mamuski w twojej okolicy. Kliknij w mail, aby poznac je wszystkie!
-date=00:48 20-05-2021
-==========
-sdr=Drugi@pwr.edu.pl
-	No elo kurewko jebana, co ty pierdolisz. JD disa i chuj ci na dziure.
-date=18:52 21-05-2021

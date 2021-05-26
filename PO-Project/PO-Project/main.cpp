@@ -60,10 +60,8 @@ int main()
 	//MailBox one("one@pwr.edu.pl", &maild), two("two@pwr.edu.pl", &maild), three("three@pwr.edu.pl", &maild);
 
 	//uone.mbox.sendEmail(&utwo.mbox);
-	//uone.mbox.sendEmail(&uthree.mbox, "Gorace mamuski w twojej okolicy.\n\n Kliknij w mail, aby poznac je wszystkie!\n");
 	//uone.mbox.sendEmail(&utwo.mbox, "Mamo, potrzebuje klej i bibule na jutro.\n\n No ale pani naprawde powiedziala dopiero teraz!\n");
-	//uthree.mbox.sendEmail(&utwo.mbox, "Gorace mamuski w twojej okolicy.\n\n Kliknij w mail, aby poznac je wszystkie!\n");
-	//uthree.mbox.sendEmail(&utwo.mbox, "SEKS SKESKEKSKEKSEKK\n\n");
+
 
 	/*regd.addSpec("ITE");
 	regd.specs[0]->addCourse("Analiza 2.3");

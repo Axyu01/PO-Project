@@ -5,7 +5,9 @@
 
 Date::Date(int yy, int mm, int dd, int hh, int min)
 	:year{yy},month{mm},day{dd},hour{hh},minute{min}
-{}
+{
+	roundDate();
+}
 
 Date::Date()					// <-- konstruktor domniemany - pobiera datê z systemu;
 {
@@ -53,8 +55,19 @@ void Date::offsetDaysBy(int dd)
 	roundDate();
 }
 
-void Date::printDate() {
+void Date::printFullDate() 
+{
 	std::cout << std::setw(2) << std::setfill('0') << hour << ":" << std::setw(2) << std::setfill('0') << minute << std::setw(1) << "   " << std::setw(2) << day << "-" << std::setw(2) << std::setfill('0') << month << "-" << year;
+}
+
+void Date::printDate() 
+{
+	std::cout << std::setw(2) << std::setfill('0') << day << "-" << std::setw(2) << std::setfill('0') << month << "-" << year;
+}
+
+void Date::printTime()
+{
+	std::cout << std::setw(2) << std::setfill('0') << hour << ":" << std::setw(2) << std::setfill('0') << minute;
 }
 
 void Date::roundDate()
@@ -62,10 +75,18 @@ void Date::roundDate()
 	bool going = true;
 	while (going)
 	{
+		if (month < 1)
+		{
+			year--;
+			month += 12;
+			continue;
+		}
+
 		if (month > 12)
 		{
 			year++;
 			month -= 12;
+			continue;
 		}
 
 		if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 1 || month == 12)
@@ -76,14 +97,45 @@ void Date::roundDate()
 				day -= 31;
 				continue;
 			}
+
+			if (day < 1)
+			{
+				month--;
+
+				if (month == 2)
+				{
+					if (!isLeapYear())
+					{
+						day += 28;
+					}
+					else 
+						day += 29;
+				}
+				else if (month == 7)
+				{
+					day += 31;
+					continue;
+				}
+				else
+					day += 30;
+				continue;
+			}
 		}
 
-		if (month == 4 || month == 6 || month == 9 || month == 7 || month == 11)
+		if (month == 4 || month == 6 || month == 9 || month == 11)
 		{
 			if (day > 30)
 			{
 				month++;
 				day -= 30;
+				continue;
+			}
+
+			if (day < 1)
+			{
+				month--;
+				if(month == 1 || month == 3 || month == 5 || month == 8 || month == 10 || month == 1 || month == 12)
+				day += 31;
 				continue;
 			}
 		}
@@ -136,6 +188,13 @@ bool Date::isLeapYear()
 			return true;
 
 	}
+	return false;
+}
+
+bool Date::isSameDay(const Date& d1, const Date& d2)
+{
+	if (d1.year == d2.year && d1.month == d2.month && d1.day == d2.day) 
+		return true;
 	return false;
 }
 

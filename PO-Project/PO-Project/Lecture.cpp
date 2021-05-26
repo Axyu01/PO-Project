@@ -7,8 +7,8 @@ Lecture::Lecture(std::string nn, bool ev, int wd, Date sd, int lc, int ul, int u
 
 	for (int i = 0; i < lectureCount; i++)
 	{
-		temp.offsetDaysBy(7);
 		CallendarData::uniEvents.push_back(new Event(name, temp, "Zajecia: " +name));
+		temp.offsetDaysBy(7);
 	}
 }
 

@@ -39,12 +39,17 @@ public:
 	void offsetDaysBy(int);
 	void roundDate();
 	bool isLeapYear();
+	static bool isSameDay(const Date&, const Date&);
 	std::string toString();
 	void printDate();
+	void printTime();
+	void printFullDate();
 };
 
 class Event
 {
+	friend class Menu;
+
 	std::string eventName;
 	Date eventDate;
 	std::string description;
@@ -52,6 +57,8 @@ class Event
 public:
 	Event(std::string, Date);
 	Event(std::string, Date, std::string);
+
+	void printInfo();
 };
 
 //struct Day
@@ -143,6 +150,7 @@ class CallendarData :public Data
 {
 	friend class Event;
 	friend class Lecture;
+	friend class Menu;
 
 	static std::vector<Event*> uniEvents;
 	//std::vector<Day> days;

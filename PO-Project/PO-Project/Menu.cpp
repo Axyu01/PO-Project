@@ -53,7 +53,7 @@ bool Menu::isLoggedIn()
 
 void Menu::drawMenu(int it)
 {
-	std::vector<std::string> optsTxt = { "Poczta", "Zapisy", "Wypisz z kierunku", "Przegladaj Chat", "Wyloguj" };
+	std::vector<std::string> optsTxt = { "Poczta", "Zapisy", "Wypisz z kierunku", "Przegladaj Chat", "Przegladaj Kalendarz", "Wyloguj" };
 
 	system("cls");
 	std::cout << "===WITAMY " << currentUser->login << "===\n\n";
@@ -359,7 +359,7 @@ void Menu::selectionScreen()
 		{
 		case KEY_DOWN:
 
-			if (it < 4)
+			if (it < 5)
 			{
 				it++;
 			}
@@ -490,6 +490,64 @@ void Menu::openChat(Chat*ch)
 	}
 }
 
+void Menu::selectCallendar()
+{
+	bool going = true;
+	int week_offset = 0;
+
+	while (going)
+	{
+		system("cls");
+		Date temp(2021, 10, 4 + (7*week_offset));
+
+
+		std::cout << "==WYDARZENIA NA " << week_offset + 1 << " TYDZIEN==" << std::endl;
+		for (int i = 0; i < 7; i++)
+		{
+			std::cout << "<<";
+			temp.printDate();
+			std::cout << ">>";
+			std::cout << "\n\n";
+			for (auto e : CallendarData::uniEvents)
+			{
+
+				if (Date::isSameDay(temp, e->eventDate))
+				{
+					std::cout << "====================\n";
+					e->printInfo();
+					std::cout << std::endl;
+				}
+			}
+			temp.offsetDaysBy(1);
+		}
+
+		char op = _getch();
+
+		switch (op)
+		{
+		case KEY_DOWN:
+			
+				week_offset++;
+
+			break;
+
+		case KEY_UP:
+			
+				week_offset--;
+
+			break;
+
+		case 13:
+			break;
+		case '0':
+			going = false;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void Menu::select(int op)
 {
 	switch (op)
@@ -505,6 +563,9 @@ void Menu::select(int op)
 		break;
 	case 3:
 		selectChat();
+		break;
+	case 4:
+		selectCallendar();
 		break;
 	default:
 		logOut();

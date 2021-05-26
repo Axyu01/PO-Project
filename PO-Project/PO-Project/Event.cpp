@@ -12,3 +12,11 @@ Event::Event(std::string name, Date date, std::string desc)
 {
 
 }
+
+void Event::printInfo()
+{
+	
+	eventDate.printTime();
+	std::cout << "\n\n" << eventName << "\n" << description << std::endl;
+
+}
