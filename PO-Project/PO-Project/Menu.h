@@ -17,8 +17,6 @@ protected:
 
 	User* currentUser;
 
-	
-
 public:
 
 	Menu();

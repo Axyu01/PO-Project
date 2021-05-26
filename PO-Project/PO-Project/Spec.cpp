@@ -8,12 +8,36 @@ Spec::Spec(std::string nm)
 
 void Spec::addCourse(std::string nm)
 {
+	for (auto c : courses)
+	{
+		if (nm == c->name)
+		{
+			return;
+		}
+	}
 	courses.push_back(new Course(nm));
 }
 
-void Spec::delCourse()
+void Spec::delCourse(std::string)
 {
+	for (int i = 0; i < courses.size(); i++)
+	{
+		if (courses[i]->name == name)
+		{
+			courses[i]->clearGroups();
 
+			courses.erase(courses.begin() + i);
+		}
+	}
+}
+
+void Spec::clearCourses()
+{
+	while (courses.size())
+	{
+		courses.back()->clearGroups();
+		courses.pop_back();
+	}
 }
 
 void Spec::addStudent(User* st)

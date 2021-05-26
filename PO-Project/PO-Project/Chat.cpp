@@ -26,10 +26,7 @@ void Chat::viewChat()
 	{
 		std::cout << m << std::endl << std::endl;
 	}
-
 }
-
-
 
 
 void Chat::saveToFile() {}

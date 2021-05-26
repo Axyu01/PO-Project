@@ -8,6 +8,14 @@ RegisterData::RegisterData()
 
 void RegisterData::addSpec(std::string nm)
 {
+	for (auto s : specs)
+	{
+		if (nm == s->name)
+		{
+			return;
+		}
+	}
+
 	specs.push_back(new Spec(nm));
 }
 
@@ -18,6 +26,18 @@ void RegisterData::listSpecs()
 		std::cout << ">>" <<s->name << std::endl;
 	}
 } 
+
+void RegisterData::delSpec(std::string name)
+{
+	for (int i = 0; i < specs.size(); i++)
+	{
+		if (specs[i]->name == name)
+		{
+			specs[i]->clearCourses();
+			specs.erase(specs.begin() + i);
+		}
+	}
+}
 
 void RegisterData::saveToFile()
 {

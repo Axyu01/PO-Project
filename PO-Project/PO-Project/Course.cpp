@@ -6,11 +6,37 @@ Course::Course(std::string nm)
 
 void Course::addGroup(std::string nm)
 {
+	for (auto g : groups)
+	{
+		if (nm == g->name)
+		{
+			return;
+		}
+	}
 	groups.push_back(new Group(nm));
 }
 
-void Course::delGroup()
-{}
+void Course::delGroup(std::string name)
+{
+	for (int i = 0; i < groups.size(); i++)
+	{
+		if (groups[i]->name == name)
+		{
+			groups[i]->clearLectures();
+
+			groups.erase(groups.begin() + i);
+		}
+	}
+}
+
+void Course::clearGroups()
+{
+	while (groups.size())
+	{
+		groups.back()->clearLectures();
+		groups.pop_back();
+	}
+}
 
 void Course::delStudent(User* st)
 {

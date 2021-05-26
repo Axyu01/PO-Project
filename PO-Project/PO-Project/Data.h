@@ -44,7 +44,6 @@ class UsersData : public Data
 {
 	friend class User;
 	friend class Menu;
-	friend int main();
 
 	static std::vector<std::string> creds;
 	static std::vector<User*> userList;
@@ -72,14 +71,15 @@ public:
 class RegisterData : public Data
 {
 	friend class Menu;
-	friend int main();
 	static std::vector<Spec*> specs;
+	friend int main();
 
 public:
 
 	RegisterData();
 
 	static void addSpec(std::string);
+	static void delSpec(std::string);
 	static void listSpecs();
 
 	void saveToFile();
@@ -130,23 +130,23 @@ public:
 //	void saveToFile();
 //	void readFromFile();
 //};
-//
-//class Event
-//{
-//	std::string eventName;
-//	Date eventDate;
-//	std::string description;
-//
-//public:
-//	Event(std::string, Date);
-//	Event(std::string, Date, std::string);
-//};
-//
-//struct Day
-//{
-//	Event ev;
-//	int day;
-//};
+
+class Event
+{
+	std::string eventName;
+	Date eventDate;
+	std::string description;
+
+public:
+	Event(std::string, Date);
+	Event(std::string, Date, std::string);
+};
+
+struct Day
+{
+	Event ev;
+	int day;
+};
 
 class Chat
 {
@@ -168,7 +168,6 @@ public:
 
 class Lecture
 {
-	friend int main();
 	friend class Group;
 	friend class Menu;
 
@@ -190,6 +189,7 @@ public:
 
 	void addParticipant(User*);
 	void delParticipant(User*);
+	void clearParticipants();
 
 	void saveToFile(std::string, std::string, std::string);
 	void readFromFile(std::string, std::string, std::string);
@@ -198,7 +198,6 @@ public:
 
 class Group
 {
-	friend int main();
 	friend class Course;
 	friend class Menu;
 
@@ -208,8 +207,9 @@ class Group
 public:
 	Group(std::string);
 
-	void addLecture(std::string, bool, int, Date, int, int, int);
-	void delLecture();
+	void addLecture(std::string, bool, int, Date, int, int, int=0);
+	void delLecture(std::string);
+	void clearLectures();
 
 	void delStudent(User*);
 
@@ -222,7 +222,6 @@ public:
 
 class Course
 {
-	friend int main();
 	friend class Spec;
 	friend class Menu;
 
@@ -233,7 +232,9 @@ public:
 	Course(std::string);
 
 	void addGroup(std::string);
-	void delGroup();
+	void delGroup(std::string);
+
+	void clearGroups();
 
 	void delStudent(User*);
 
@@ -246,7 +247,6 @@ public:
 
 class Spec
 {
-	friend int main();
 	friend class RegisterData;
 	friend class Menu;
 	friend class UsersData;
@@ -259,7 +259,9 @@ public:
 	Spec(std::string);
 
 	void addCourse(std::string);
-	void delCourse();
+	void delCourse(std::string);
+
+	void clearCourses();
 
 	void addStudent(User*);
 	void delStudent(User*);
@@ -326,8 +328,6 @@ class User
 	friend class Menu;
 	friend class Lecture;
 	friend class Spec;
-
-	friend int main();
 
 	std::string email;
 	std::string login;

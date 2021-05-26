@@ -26,6 +26,15 @@ void Lecture::delParticipant(User* usr)
 	}
 }
 
+void Lecture::clearParticipants()
+{
+	while (participants.size())
+	{
+		participants.back()->leaveLecture(this);
+		participants.pop_back();
+	}
+}
+
 
 void Lecture::saveToFile(std::string specname, std::string coursename, std::string groupname)
 {
@@ -86,6 +95,7 @@ void Lecture::saveToFile(std::string specname, std::string coursename, std::stri
 
 	plik.close();
 
+	std::cout << "Pomyslnie zapisano zajecia do pliku " + name + ".txt" << std::endl;
 }
 
 void Lecture::readFromFile(std::string specname, std::string coursename, std::string groupname)

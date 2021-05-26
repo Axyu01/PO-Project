@@ -21,10 +21,7 @@ int main()
 	data[0]->readFromFile();
 	data[1]->readFromFile();
 	data[2]->readFromFile();
-	if(true)
-	{
-		std::cout << "\nHere";
-	}
+
 	//regd.addSpec("ITE");
 	//regd.specs[0]->addCourse("Analiza Matematyczna 2");
 	//regd.specs[0]->courses[0]->addGroup("Wyklad");
@@ -39,9 +36,8 @@ int main()
 	bool going = true;
 	while (going)
 	{
-		
-		men.loginScreen(&usersd, going);
 
+		men.loginScreen(&usersd, going);
 
 		data[0]->saveToFile();
 		data[1]->saveToFile();
@@ -49,7 +45,7 @@ int main()
 		data[3]->saveToFile();
 
 		if (going == false) return 0;
-		
+
 		men.selectionScreen();
 
 		data[0]->saveToFile();

@@ -8,12 +8,36 @@ Group::Group(std::string nm)
 
 void Group::addLecture(std::string nm, bool ev, int wd, Date sd, int lc, int ul, int uc)
 {
+	for (auto l : lectures)
+	{
+		if (l->name == nm)
+		{
+			return;
+		}
+	}
 	lectures.push_back(new Lecture(nm, ev, wd, sd, lc, ul, uc));
 }
 
-void Group::delLecture()
+void Group::delLecture(std::string name)
 {
+	for (int i = 0; i < lectures.size(); i++)
+	{
+		if (lectures[i]->name == name)
+		{
+			lectures[i]->clearParticipants();
 
+			lectures.erase(lectures.begin() + i);
+		}
+	}
+}
+
+void Group::clearLectures()
+{
+	while (lectures.size())
+	{
+		lectures.back()->clearParticipants();
+		lectures.pop_back();
+	}
 }
 
 void Group::delStudent(User* st)

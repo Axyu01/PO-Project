@@ -14,3 +14,8 @@ KleksAleks@pwr.edu.pl
 KleksAleks
 dupachuj
 student
+==========
+L00dwin@pwr.edu.pl
+L00dwin
+chuj
+student
