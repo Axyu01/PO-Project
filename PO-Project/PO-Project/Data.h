@@ -78,7 +78,7 @@ public:
 	void editUser();
 
 	bool userExists(std::string);
-	User* verifyUser(std::string, std::string);
+	static User* verifyUser(std::string, std::string);
 	static User* findUser(std::string);
 
 	void registerUser();

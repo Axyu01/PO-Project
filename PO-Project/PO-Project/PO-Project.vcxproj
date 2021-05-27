@@ -114,7 +114,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\ConsoleGUI.cpp" />
     <ClCompile Include="CallendarData.cpp" />
     <ClCompile Include="Chat.cpp" />
     <ClCompile Include="ChatData.cpp" />
@@ -154,7 +153,6 @@
     <ClCompile Include="MailBox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MailData.cpp" />
-    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="RegisterData.cpp" />
     <ClCompile Include="Spec.cpp" />
     <ClCompile Include="User.cpp" />
@@ -163,7 +161,6 @@
   <ItemGroup>
     <ClInclude Include="Data.h" />
     <ClInclude Include="Funkcje_zapis.h" />
-    <ClInclude Include="Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
