@@ -503,9 +503,427 @@ class RegisterSystem
 {
     friend Menu;
 
+private:
+
+    User* currentUser = nullptr;
+    int which_spec=0;
+    int which_course = 0;
+    int which_group = 0;
+    int which_lecture = 0;
+
+public:
+
+    RegisterSystem(){}
+
+    void viewRegisterSystem()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+
+        background.addButton(new Button(0, 0, 30 + currentUser->login.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==WITAJ W SYSTEMIE ZAPISOW " + currentUser->login + "==");
+        background.buttonsTab[0].addText("");
+
+        if (!currentUser->isRegistered()) {
+            optList.addButton(new Button(0, 3, 28, 3, 62));
+            optList.buttonsTab[0].addText("");
+            optList.buttonsTab[0].addText("Wybierz kierunek");
+            optList.buttonsTab[0].setButtonFunction([&]() { selectSpec(); });
+
+            while (currentUser->spec==nullptr)
+            {
+                system("cls");
+                background.viewInterface();
+                optList.viewInterface();
+
+                char ch = _getch();
+
+                optList.moveCursor(ch);
+
+                which_spec = optList.getCurrentButtonInt();
+
+                if (ch == 27)
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            optList.addButton(new Button(0, 3, 28, 3, 62));
+            optList.buttonsTab[0].addText("");
+            optList.buttonsTab[0].addText("Zapisy na zajecia");
+            optList.buttonsTab[0].setButtonFunction([&]() {selectCourse(); });
+
+            optList.addButton(new Button(0, 6, 28, 3, 62));
+            optList.buttonsTab[1].addText("");
+            optList.buttonsTab[1].addText("Wypisz sie z kierunku " + currentUser->spec->name);
+            optList.buttonsTab[1].setButtonFunction([&]() {leaveSpec(); });
+
+            while (currentUser->spec != nullptr)
+            {
+                system("cls");
+                background.viewInterface();
+                optList.viewInterface();
+
+                char ch = _getch();
+
+                optList.getCurrentButtonInt();
+
+                optList.moveCursor(ch);
+
+                if (ch == 27)
+                {
+                    break;
+                }
+            }
+        }
+
+     }
+
+    void selectSpec()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+
+        background.addButton(new Button(0, 0, 30 + currentUser->login.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==KIERUNKI DOSTEPNE DLA " + currentUser->login + "==");
+        background.buttonsTab[0].addText("");
+
+        for (int i=0;i<RegisterData::specs.size();i++)
+        {
+            optList.addButton(new Button(0, 3 + (i * 3), 20, 3, 62));
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].addText("Zapisz na " + RegisterData::specs[i]->name);
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {joiningSpec(); });
+        }
+
+
+
+        while (currentUser->spec==nullptr)
+        {
+            system("cls");
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            which_spec = optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                break;
+            }
+        }
+
+    }
+
+    void joiningSpec()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+
+        background.addButton(new Button(0, 0, 40 + RegisterData::specs[which_spec]->name.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==CZY NAPEWNO ZAPISAC NA KIERUNEK " + RegisterData::specs[which_spec]->name + "?==");
+        background.buttonsTab[0].addText("");
+
+        optList.addButton(new Button(0, 3, 5, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText(" TAK");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {currentUser->joinSpec(RegisterData::specs[which_spec]); });
+
+        optList.addButton(new Button(6, 3, 5, 3, 62));
+        optList.buttonsTab[1].addText("");
+        optList.buttonsTab[1].addText(" NIE");
+        optList.buttonsTab[1].addText("");
+        optList.buttonsTab[1].setButtonFunction([&]() {});
+
+        while (true)
+        {
+            system("cls");
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+            
+            optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                break;
+            }
+            if (ch == ' ')
+            {
+                break;
+            }
+        }
+
+
+    }
+
+    void leaveSpec()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+
+        background.addButton(new Button(0, 0, 40 + RegisterData::specs[which_spec]->name.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==CZY NAPEWNO WYPISAC Z KIERUNKU " + RegisterData::specs[which_spec]->name + "?==");
+        background.buttonsTab[0].addText("");
+
+        optList.addButton(new Button(0, 3, 5, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText(" TAK");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {currentUser->leaveSpec(); });
+
+        optList.addButton(new Button(6, 3, 5, 3, 62));
+        optList.buttonsTab[1].addText("");
+        optList.buttonsTab[1].addText(" NIE");
+        optList.buttonsTab[1].addText("");
+        optList.buttonsTab[1].setButtonFunction([&]() {});
+
+        while (true)
+        {
+            system("cls");
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                break;
+            }
+            if (ch == ' ')
+            {
+                break;
+            }
+        }
+
+
+
+    }
+
+    void selectCourse()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+
+        background.addButton(new Button(0, 0, 23 + currentUser->spec->name.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==KURSY DOSTEPNE DLA " + currentUser->spec->name + "==");
+        background.buttonsTab[0].addText("");
+
+        for (int i = 0; i < currentUser->spec->courses.size(); i++)
+        {
+            optList.addButton(new Button(0, 3 + (i * 3), 25, 3, 62));
+            optList.buttonsTab[i].addText("");
+            std::string name = currentUser->spec->courses[i]->name;
+
+            if(name.size()>25)
+              std::string name = name.substr(0, 21) + "...";
+
+            optList.buttonsTab[i].addText(name);
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {selectGroup(); });
+        }
+
+
+
+        while (true)
+        {
+            system("cls");
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            which_course=optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                break;
+            }
+        }
+
+
+    }
+
+    void selectGroup()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+
+        background.addButton(new Button(0, 0, 16 + currentUser->spec->courses[which_course]->name.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==GRUPY KURSU " + currentUser->spec->courses[which_course]->name + "==");
+        background.buttonsTab[0].addText("");
+
+        for (int i = 0; i < currentUser->spec->courses[which_course]->groups.size(); i++)
+        {
+            optList.addButton(new Button(0, 3+(i*3), 25, 3, 62));
+            optList.buttonsTab[i].addText("");
+            std::string name = currentUser->spec->courses[which_course]->groups[i]->name;
+
+            if (name.size() > 25)
+                std::string name = name.substr(0, 21) + "...";
+
+            optList.buttonsTab[i].addText(name);
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {selectLecture(); });
+        }
+
+
+
+        while (true)
+        {
+            system("cls");
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            which_group = optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                break;
+            }
+        }
+    }
+
+    void selectLecture()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+
+        background.addButton(new Button(0, 0, 30 + currentUser->spec->courses[which_course]->groups[which_group]->name.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==DOSTEPNE ZAJECIA W GRUPIE " + currentUser->spec->courses[which_course]->groups[which_group]->name + "==");
+        background.buttonsTab[0].addText("");
+
+        for (int i = 0; i < currentUser->spec->courses[which_course]->groups[which_group]->lectures.size(); i++)
+        {
+            optList.addButton(new Button(0, 3 + (i * 3), 25, 3, 62));
+            optList.buttonsTab[i].addText("");
+            std::string name = currentUser->spec->courses[which_course]->groups[which_group]->lectures[i]->name;
+
+            if (name.size() > 25)
+            {
+                std::string temp = name.substr(0, 22) + "...";
+                    name = temp;
+            }
+
+            optList.buttonsTab[i].addText(name);
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {joinLecture(); });
+        }
+
+        for (int i = 0; i < currentUser->spec->courses[which_course]->groups[which_group]->lectures.size(); i++)
+        {
+            background.addButton(new Button(26, 3 + (i * 3), 10, 3, 62));
+            background.buttonsTab[1 + i].addText("");
+            background.buttonsTab[1 + i].addText("");
+            background.buttonsTab[1 + i].addText("");
+        }
+
+
+
+        while (true)
+        {
+            system("cls");
+
+            for (int i = 0; i < currentUser->spec->courses[which_course]->groups[which_group]->lectures.size(); i++)
+            {
+                if(currentUser->isRegistered(currentUser->spec->courses[which_course]->groups[which_group]->lectures[i]))
+                  background.buttonsTab[1 + i].editTabText(1,">ZAPISANY<");
+                else
+                  background.buttonsTab[1 + i].editTabText(1, "");
+            }
+
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            which_lecture = optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                break;
+            }
+        }
+
+
+    }
+
+    void joinLecture()
+    {
+        Interface prompt;
+
+        prompt.addButton(new Button(0, 0, 35 + currentUser->spec->courses[which_course]->groups[which_group]->lectures.size(), 3, 62));
+        prompt.buttonsTab[0].addText("");
+        prompt.buttonsTab[0].addText("==JESTES JUZ ZAPISANY W TEJ GRUPIE!==");
+
+
+        if (currentUser->isRegistered(currentUser->spec->courses[which_course]->groups[which_group]->lectures[which_lecture]))
+        {
+            currentUser->leaveLecture(currentUser->spec->courses[which_course]->groups[which_group]->lectures[which_lecture]);
+        }
+        else if (!currentUser->spec->courses[which_course]->groups[which_group]->userRegisteredInGroup(currentUser))
+        {
+            currentUser->joinLecture(currentUser->spec->courses[which_course]->groups[which_group]->lectures[which_lecture]);
+        }
+        else
+        {
+            prompt.viewInterface();
+            _getch();
+        }
+
+    }
 };
 class ChatSystem
 {
+    //////////////////////////////////////////////
+    //                                          //
+    //                FINISHED                  //
+    //                                          //
+    //////////////////////////////////////////////
+
     friend Menu;
 
 private:
@@ -1124,7 +1542,7 @@ public:
                 menu.addButton(new Button(0, 17, 30, 3, 62));//
                 menu.buttonsTab[5].addText("");
                 menu.buttonsTab[5].addText("Rejestracja");
-                menu.buttonsTab[3].setButtonFunction([&]() {selectRegister(); });
+                menu.buttonsTab[5].setButtonFunction([&]() {selectRegister(); });
             }
             menu.viewInterface();
 
@@ -1149,7 +1567,8 @@ public:
     }
     void selectRegister()
     {
-
+        registerSys->currentUser = currentUser;
+        registerSys->viewRegisterSystem();
     }
     void selectChat()
     {

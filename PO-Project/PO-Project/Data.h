@@ -100,6 +100,7 @@ public:
 class RegisterData : public Data
 {
 	friend class Menu;
+	friend class RegisterSystem;
 	static std::vector<Spec*> specs;
 	friend int main();
 
@@ -188,6 +189,7 @@ class Lecture
 	friend class User;
 	friend class Menu;
 	friend class ChatSystem;
+	friend class RegisterSystem;
 
 	std::string name;
 	bool isEven;
@@ -218,6 +220,7 @@ class Group
 {
 	friend class Course;
 	friend class Menu;
+	friend class RegisterSystem;
 
 	std::string name;
 	std::vector<Lecture*> lectures;
@@ -242,6 +245,7 @@ class Course
 {
 	friend class Spec;
 	friend class Menu;
+	friend class RegisterSystem;
 
 	std::string name;
 	std::vector<Group*> groups;
@@ -265,6 +269,7 @@ public:
 
 class Spec
 {
+	friend class RegisterSystem;
 	friend class RegisterData;
 	friend class Menu;
 	friend class UsersData;
@@ -347,6 +352,7 @@ class User
 	friend class Lecture;
 	friend class Spec;
 	friend class ChatSystem;
+	friend class RegisterSystem;
 
 	std::string email;
 	std::string login;
