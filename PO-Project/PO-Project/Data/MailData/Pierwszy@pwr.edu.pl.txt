@@ -1,1 +1,5 @@
 -----DATA_OF_Pierwszy@pwr.edu.pl.txt----
+==========
+sdr=Drugi@pwr.edu.pl
+Hello world!
+date=18:41 26-05-2021

@@ -19,7 +19,7 @@ class Chat;
 class Date;
 class Spec;
 
-class Date
+class Date //przerobione
 {
 	friend class MailBox;
 
@@ -41,8 +41,10 @@ public:
 	bool isLeapYear();
 	static bool isSameDay(const Date&, const Date&);
 	std::string toString();
-	void printDate();
-	void printTime();
+	std::string toStringDate();
+	std::string toStringTime();
+
+
 	void printFullDate();
 };
 
@@ -58,7 +60,9 @@ public:
 	Event(std::string, Date);
 	Event(std::string, Date, std::string);
 
-	void printInfo();
+	std::string printEventName();
+	std::string printEventDate();
+	std::string printEventDesc();
 };
 
 //struct Day
@@ -85,7 +89,7 @@ public:
 	void editUser();
 
 	bool userExists(std::string);
-	User* verifyUser(std::string, std::string);
+	static User* verifyUser(std::string, std::string);
 	static User* findUser(std::string);
 
 	void registerUser();
@@ -354,7 +358,7 @@ class User
 	Spec* spec = nullptr;
 	std::vector<Lecture*> userLectures;
 	std::vector<Event*> customEvents;
-	std::vector<Event*> lectureEvents;
+	//std::vector<Event*> lectureEvents;
 
 public:
 
@@ -373,8 +377,8 @@ public:
 
 
 
-	//void addEvent();
-	//void addEvent(Date);
-	//void delCusomEvent();
+	void addEvent();
+	void addEvent(Date);
+	void delCusomEvent();
 
 };

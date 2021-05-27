@@ -2,3 +2,4 @@ Pierwszy@pwr.edu.pl
 ArekPytka@pwr.edu.pl
 KleksAleks@pwr.edu.pl
 L00dwin@pwr.edu.pl
+Drugi@pwr.edu.pl

@@ -505,7 +505,7 @@ void Menu::selectCallendar()
 		for (int i = 0; i < 7; i++)
 		{
 			std::cout << "<<";
-			temp.printDate();
+			temp.toStringDate();
 			std::cout << ">>";
 			std::cout << "\n\n";
 			for (auto e : CallendarData::uniEvents)
@@ -514,7 +514,7 @@ void Menu::selectCallendar()
 				if (Date::isSameDay(temp, e->eventDate))
 				{
 					std::cout << "====================\n";
-					e->printInfo();
+					e->printEventName();
 					std::cout << std::endl;
 				}
 			}
@@ -536,7 +536,6 @@ void Menu::selectCallendar()
 				week_offset--;
 
 			break;
-
 		case 13:
 			break;
 		case '0':

@@ -19,3 +19,8 @@ L00dwin@pwr.edu.pl
 L00dwin
 chuj
 student
+==========
+Drugi@pwr.edu.pl
+Drugi
+password2
+student

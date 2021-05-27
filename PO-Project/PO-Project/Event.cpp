@@ -13,10 +13,7 @@ Event::Event(std::string name, Date date, std::string desc)
 
 }
 
-void Event::printInfo()
+std::string Event::printEventName()
 {
-	
-	eventDate.printTime();
-	std::cout << "\n\n" << eventName << "\n" << description << std::endl;
-
+	return eventName;
 }

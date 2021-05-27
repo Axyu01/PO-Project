@@ -60,14 +60,30 @@ void Date::printFullDate()
 	std::cout << std::setw(2) << std::setfill('0') << hour << ":" << std::setw(2) << std::setfill('0') << minute << std::setw(1) << "   " << std::setw(2) << day << "-" << std::setw(2) << std::setfill('0') << month << "-" << year;
 }
 
-void Date::printDate() 
+std::string Date::toStringDate() 
 {
-	std::cout << std::setw(2) << std::setfill('0') << day << "-" << std::setw(2) << std::setfill('0') << month << "-" << year;
+	std::string mth;
+	if (month < 10) mth = "0" + std::to_string(month);
+	else mth = std::to_string(month);
+
+	std::string dd;
+	if (day < 10) dd = "0" + std::to_string(day);
+	else dd = std::to_string(day);
+
+	return dd + "-" + mth + "-" + std::to_string(year);
 }
 
-void Date::printTime()
+std::string Date::toStringTime()
 {
-	std::cout << std::setw(2) << std::setfill('0') << hour << ":" << std::setw(2) << std::setfill('0') << minute;
+	std::string hrs;
+	if (hour < 10)  hrs = "0" + std::to_string(hour);
+	else hrs = std::to_string(hour);
+
+	std::string mins;
+	if (minute < 10)  mins = "0" + std::to_string(minute);
+	else mins = std::to_string(minute);
+
+	return hrs + ":" + mins;
 }
 
 void Date::roundDate()
