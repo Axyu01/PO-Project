@@ -1483,6 +1483,7 @@ public:
             login = loginScr.buttonsTab[0].textTab[0] + loginScr.buttonsTab[0].textTab[1] + loginScr.buttonsTab[0].textTab[2];
             password = loginScr.buttonsTab[1].textTab[0] + loginScr.buttonsTab[1].textTab[1] + loginScr.buttonsTab[1].textTab[2];
 
+
             ch = _getch();
             loginScr.moveCursor(ch);
         }
@@ -1600,6 +1601,7 @@ int main()
     data[2]->readFromFile();
 
     Menu menu;
+
     menu.loginScreen();
     return 0;
 }

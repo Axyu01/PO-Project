@@ -34,14 +34,15 @@ class Date
 public:
 
 	Date();
-	Date(int, int, int, int=12, int=0);
-	void changeDate(int, int, int, int, int);
-	void changeDate(int, int, int, int);
-	void changeDate(int, int);
+	Date(int yy, int mm, int dd, int hh=12, int min=0);
+	void changeDate(int min, int hh, int dd, int mm, int yy);
+	void changeDate(int min, int hh, int dd, int mm);
+	void changeDate(int min, int hh);
 	void offsetDaysBy(int);
 	void roundDate();
 	bool isLeapYear();
 	std::string toString();
+	static bool isSameDay(const Date& first, const Date& second);
 
 
 	int returnDayOfWeek();
@@ -54,6 +55,8 @@ public:
 
 class Event
 {
+	friend class CallendarData;
+
 	std::string eventName;
 	Date eventDate;
 	std::string description;
@@ -160,6 +163,8 @@ class CallendarData :public Data
 public:
 	CallendarData();
 
+	static std::vector<Event*> returnUserEvents(User*,const Date&);
+
 	void saveToFile();
 	void readFromFile();
 };
@@ -190,6 +195,7 @@ class Lecture
 	friend class Menu;
 	friend class ChatSystem;
 	friend class RegisterSystem;
+	friend class CallendarData;
 
 	std::string name;
 	bool isEven;
@@ -353,6 +359,7 @@ class User
 	friend class Spec;
 	friend class ChatSystem;
 	friend class RegisterSystem;
+	friend class CallendarData;
 
 	std::string email;
 	std::string login;

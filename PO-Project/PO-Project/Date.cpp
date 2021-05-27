@@ -94,6 +94,10 @@ int Date::returnFirstDay()
 	return temp.returnDayOfWeek();
 }
 
+bool Date::isSameDay(const Date& first, const Date& second)
+{
+	return (first.day == second.day && first.month == second.month && first.year == second.year);
+}
 
 void Date::roundDate()
 {
