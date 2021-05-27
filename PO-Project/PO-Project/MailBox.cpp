@@ -48,7 +48,6 @@ void MailBox::sendEmail(std::string rec, std::string txt) {
 
 void MailBox::deleteEmail(int which) 
 {
-	listMail();
 		if(which <= mail.size() && which > 0)
 		mail.erase(mail.begin() + which - 1);
 }

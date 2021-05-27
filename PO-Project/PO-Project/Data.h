@@ -166,6 +166,7 @@ public:
 class Chat
 {
 	friend class ChatData;
+	friend class ChatSystem;
 
 	std::string chatName;
 	std::vector<std::string> chatArchive;
@@ -186,6 +187,7 @@ class Lecture
 	friend class Group;
 	friend class User;
 	friend class Menu;
+	friend class ChatSystem;
 
 	std::string name;
 	bool isEven;
@@ -344,6 +346,7 @@ class User
 	friend class Menu;
 	friend class Lecture;
 	friend class Spec;
+	friend class ChatSystem;
 
 	std::string email;
 	std::string login;

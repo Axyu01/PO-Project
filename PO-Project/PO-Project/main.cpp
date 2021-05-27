@@ -510,11 +510,155 @@ class ChatSystem
 
 private:
 
-    User* currentUser;
+    User* currentUser = nullptr;
+    int selectedChatIt = 0;
 
 public:
 
     ChatSystem() {}
+
+    void viewChat()
+    {
+        system("cls");
+        Interface background;
+        Interface chat;
+
+        background.addButton(new Button(0, 0, 30+currentUser->login.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==LISTA CHATOW UZYTKOWNIKA " + currentUser->login + "==");
+
+        for (int i = 0; i < currentUser->userLectures.size(); i++)
+        {
+            chat.addButton(new Button(1, 1+2*(i+1), 30, 2, 62));
+            chat.buttonsTab[i].addText(currentUser->userLectures[i]->name);
+            chat.buttonsTab[i].setButtonFunction([&]() {showChatWindow(); });
+        }
+
+        while (true)
+        {
+            system("cls");
+            background.viewInterface();
+            chat.viewInterface();
+
+            char ch = _getch();
+
+            selectedChatIt = chat.getCurrentButtonInt();
+
+            chat.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                break;
+            }
+        }
+
+    }
+
+    void showChatWindow()
+    {
+        system("cls");
+        Interface chatWindowBckgrnd;
+        Interface chatWindowInteractable;
+
+        chatWindowBckgrnd.addButton(new Button(0, 0, 30 + currentUser->userLectures[selectedChatIt]->lectureChat.chatName.size(), 3, 62));
+
+        chatWindowBckgrnd.buttonsTab[0].addText("");
+        chatWindowBckgrnd.buttonsTab[0].addText("==CHAT ZAJEC " + currentUser->userLectures[selectedChatIt]->name + "==");
+
+        chatWindowBckgrnd.addButton(new Button(0, 3, 40, 16, 62));
+        chatWindowBckgrnd.addButton(new Button(0, 19, 40, 1, 60));
+        chatWindowBckgrnd.buttonsTab[2].addText("=Tu wpisz wiadomosc====================");
+        for (int i = 0; i < 16; i++)
+        {
+            chatWindowBckgrnd.buttonsTab[1].addText("");
+        }
+
+
+
+        chatWindowInteractable.addButton(new Button(0, 20, 40, 3, 62));
+        chatWindowInteractable.buttonsTab[0].addText("");
+        chatWindowInteractable.buttonsTab[0].addText("");
+        chatWindowInteractable.buttonsTab[0].addText("");
+        chatWindowInteractable.buttonsTab[0].setButtonFunction([&]() {chatWindowInteractable.buttonsTab[0].realTimeInput(); });
+
+
+
+        while (true)
+        {
+            //int i;
+            //if (currentUser->userLectures[selectedChatIt]->lectureChat.chatArchive.size() < 8)
+            //    i = currentUser->userLectures[selectedChatIt]->lectureChat.chatArchive.size();
+            //else i = 8;
+            int curChatSize = currentUser->userLectures[selectedChatIt]->lectureChat.chatArchive.size()-1;
+
+            //for (int j = 0; j < 16; j++)
+            //{
+            //    chatWindowBckgrnd.buttonsTab[1].textTab[j] = "";
+            //}
+
+            int which_line = 15;
+            for (int i= 0; i < curChatSize; i++)
+            {
+                std::string chatm = currentUser->userLectures[selectedChatIt]->lectureChat.chatArchive[curChatSize - i];
+                std::string prefix = chatm.substr(0, chatm.find(':') + 14);
+                std::string msg = chatm.substr(chatm.find(':') + 15, chatm.npos);
+
+
+                if (which_line > -1)
+                {
+
+                    if (msg.size() > 40)
+                    {
+                        std::string first = msg.substr(0, 40);
+                        std::string second = msg.substr(40,msg.npos);
+
+                        if (second.size() > 40)
+                        {
+                            std::string third = msg.substr(80, msg.npos);
+                            chatWindowBckgrnd.buttonsTab[1].editTabText(which_line--, third);
+                        }
+                        chatWindowBckgrnd.buttonsTab[1].editTabText(which_line--, second);
+                        chatWindowBckgrnd.buttonsTab[1].editTabText(which_line--, first);
+                    }
+                    else if (msg.size())
+                        chatWindowBckgrnd.buttonsTab[1].editTabText(which_line--, msg);
+
+                    if(which_line>-1)
+                        chatWindowBckgrnd.buttonsTab[1].editTabText(which_line--, prefix);
+                }
+            }
+
+            system("cls");
+            chatWindowBckgrnd.viewInterface();
+            chatWindowInteractable.viewInterface();
+
+            char ch = _getch();
+
+            chatWindowInteractable.moveCursor(ch);
+
+            std::string message = chatWindowInteractable.buttonsTab[0].textTab[0] + chatWindowInteractable.buttonsTab[0].textTab[1] + chatWindowInteractable.buttonsTab[0].textTab[2];
+
+            switch (ch)
+            {
+            case 13:
+            {
+                if (message.size())
+                {
+                    currentUser->userLectures[selectedChatIt]->lectureChat.sendMessage(currentUser,message);
+                    chatWindowInteractable.buttonsTab[0].editTabText(0,"");
+                    chatWindowInteractable.buttonsTab[0].editTabText(0,"");
+                    chatWindowInteractable.buttonsTab[0].editTabText(0,"");
+                }
+            }
+            break;
+            }
+            if (ch == 27)
+            {
+                break;
+            }
+        }
+
+    }
 
 };
 class MailSystem
@@ -1009,7 +1153,8 @@ public:
     }
     void selectChat()
     {
-
+        chat->currentUser = currentUser;
+        chat->viewChat();
     }
     void selectMail()
     {
