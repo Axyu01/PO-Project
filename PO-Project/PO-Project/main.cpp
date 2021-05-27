@@ -508,6 +508,14 @@ class ChatSystem
 {
     friend Menu;
 
+private:
+
+    User* currentUser;
+
+public:
+
+    ChatSystem() {}
+
 };
 class MailSystem
 {

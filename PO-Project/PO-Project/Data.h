@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <ctime>
 #include "Funkcje_zapis.h"
 
 
@@ -29,6 +30,7 @@ class Date
 	int hour = 12;
 	int minute = 0;
 
+
 public:
 
 	Date();
@@ -40,6 +42,13 @@ public:
 	void roundDate();
 	bool isLeapYear();
 	std::string toString();
+
+
+	int returnDayOfWeek();
+	int returnDaysInMonth();
+	int returnFirstDay();
+
+
 	void printDate();
 };
 
