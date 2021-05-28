@@ -177,6 +177,7 @@ class Lecture
 	friend class Group;
 	friend class User;
 	friend class Menu;
+	friend class MailSystem;
 
 	std::string name;
 	bool isEven;
@@ -282,6 +283,8 @@ public:
 class Mail
 {
 	friend class MailBox;
+	friend class MailSystem;
+	friend class User;
 
 	std::string sender;
 	std::string reciever;
@@ -305,6 +308,8 @@ class MailBox
 {
 
 	friend class MailData;
+	friend class User;
+	friend class MailSystem;
 
 	std::string address;
 	std::vector<Mail*> mail;
@@ -335,6 +340,7 @@ class User
 	friend class Menu;
 	friend class Lecture;
 	friend class Spec;
+	friend class MailSystem;
 
 	std::string email;
 	std::string login;

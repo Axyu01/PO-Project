@@ -513,10 +513,290 @@ class MailSystem
 {
     friend Menu;
 private:
-    User* currentUser;
-    MailData* mailData;
-    RegisterData* regData;
+    User* currentUser;//wyciągam maile currentUser.mbox.sendEmail(adres skrzynki pocztowej,tresc)
+    //potrzebuje ludzi z lecutre lecture.participants dla wykladowcy
+    //potrzebuje wszystkie emaile dla admina MailData wypisanie;//MailBox usuwanie
+public:
+    MailSystem()
+    {
 
+    }
+    void viewMailBox()
+    {
+        //std::cout << "xd";
+        system("cls");
+        //callendar.getCurrentButtonInt();
+        Interface list;
+
+        int listPage = 0;
+
+        for (int i = 0; i < 10; i++)//Button(int xPosB, int yPosB, int xSizeB, int ySizeB, int colorB)
+        {
+            list.addButton(new Button(4, i * 2 + 2, 30, 2, 48));
+            list.buttonsTab[i].addText("");
+            list.buttonsTab[i].addText("");
+            if (currentUser->mbox.mail.size() > i + 10 * listPage)
+                list.buttonsTab[i].textTab[1] = currentUser->mbox.mail[i + 10 * listPage]->date.toString() + currentUser->mbox.mail[i + 10 * listPage]->sender;
+
+        }
+
+
+        list.addButton(new Button(4, 22, 15, 3, 32));//prev Events
+        list.buttonsTab[10].addText("");
+        list.buttonsTab[10].addText("prev");
+
+
+        list.addButton(new Button(4, 25, 15, 3, 32));//next Events
+        list.buttonsTab[11].addText("");
+        list.buttonsTab[11].addText("next");
+
+        list.addButton(new Button(4, 28, 15, 3, 32));//add Event
+        list.buttonsTab[12].addText("");
+        list.buttonsTab[12].addText(" SEND MAIL");
+
+        if (true)
+        {
+
+        }
+        if (true)
+        {
+
+        }
+
+        char ch;
+        while (true)
+        {
+            system("cls");
+            list.viewInterface();
+            ch = _getch();
+
+            list.moveCursor(ch);
+
+            switch (ch)
+            {
+            case ' '://do zrobienia//Wybieranie eventu
+            {
+                int intVar=list.getCurrentButtonInt();
+                if (intVar < 10)
+                {
+                    viewMailContents(intVar+10*listPage);
+                }
+                else if (intVar == 10)
+                {
+                    listPage--;
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if(currentUser->mbox.mail.size()>i+10*listPage)
+                        list.buttonsTab[i].textTab[1]=currentUser->mbox.mail[i + 10 * listPage]->date.toString() + currentUser->mbox.mail[i + 10 * listPage]->sender;
+
+                    }
+                }
+                else if (intVar == 11)
+                {
+                    listPage++;
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if (currentUser->mbox.mail.size() > i + 10 * listPage)
+                            list.buttonsTab[i].textTab[1] = currentUser->mbox.mail[i + 10 * listPage]->date.toString() + currentUser->mbox.mail[i + 10 * listPage]->sender;
+
+                    }
+                }
+                else if (intVar == 12)
+                {
+                    //sendMail();
+                }
+            }
+            break;
+            }
+            if (ch == 27)
+            {
+                break;
+            }
+        }
+
+    }
+    void viewMailContents(int var)
+    {
+        Interface mail;
+        mail.addButton(new Button(0, 0, 50, 3, 62));
+        mail.buttonsTab[0].addText("");
+        mail.buttonsTab[0].addText(currentUser->mbox.mail[var]->date.toString());
+
+        mail.addButton(new Button(0, 3, 50, 3, 62));
+        mail.buttonsTab[1].addText("from:");
+        mail.buttonsTab[1].addText(currentUser->mbox.mail[var]->sender);
+
+        mail.addButton(new Button(0, 6, 50, 3, 62));
+        mail.buttonsTab[2].addText("to:");
+        mail.buttonsTab[2].addText(currentUser->mbox.mail[var]->reciever);
+
+        mail.addButton(new Button(0, 9, 50, 10, 62));
+        
+        std::string stringVar;
+        for (int i=0;i< currentUser->mbox.mail[var]->text.size();i++)
+        {
+            stringVar += currentUser->mbox.mail[var]->text[i];
+            if ((i + 1)% 50 == 0)
+            {
+                mail.buttonsTab[3].addText(stringVar);
+                stringVar = "";
+            }
+            if (i == 499)
+            {
+                i = currentUser->mbox.mail[var]->text.size();
+            }
+        }
+        if (stringVar.size()>0)
+        {
+            mail.buttonsTab[3].addText(stringVar);
+        }
+        if (currentUser->userType == "admin")
+        {
+            mail.addButton(new Button(0, 19, 50, 3, 62));
+            mail.buttonsTab[4].addText("");
+            mail.buttonsTab[4].addText("DeleteMail");
+        }
+
+        mail.viewInterface();
+
+        char ch;
+
+        while (true)
+        {
+            ch=_getch();
+            mail.moveCursor(ch);
+            if (ch == ' ' && mail.getCurrentButtonInt() == 4 && currentUser->userType == "admin")
+            {
+                currentUser->mbox.deleteEmail(var+1);
+            }
+            if (ch == 27)
+                break;
+        }
+
+        //currentUser->mbox.mail[var]->date.toString() + currentUser->mbox.mail[var]->sender;
+    }
+    void viewSendMail()
+    {
+        Interface mail;
+        Interface background;
+
+        background.addButton(new Button(0, 0, 50, 1, 62));
+        background.buttonsTab[0].addText("from:");
+
+        mail.addButton(new Button(0, 1, 50, 2, 62));
+        if (currentUser->userType != "admin")
+            mail.buttonsTab[0].addText(currentUser->email);
+        else
+            mail.buttonsTab[0].setButtonFunction([&]() {mail.buttonsTab[0].realTimeInput(); });
+
+
+        background.addButton(new Button(0, 3, 50, 1, 62));
+        background.buttonsTab[1].addText("to:");
+
+        mail.addButton(new Button(0, 4, 50, 2, 62));
+        mail.buttonsTab[1].setButtonFunction([&]() {mail.buttonsTab[1].realTimeInput(); });
+
+        mail.addButton(new Button(0, 6, 50, 10, 62));
+        mail.buttonsTab[2].setButtonFunction([&]() {mail.buttonsTab[2].realTimeInput(); });
+
+        mail.addButton(new Button(0, 16, 50, 3, 62));
+        mail.buttonsTab[3].addText("");
+        mail.buttonsTab[3].addText("Send");
+
+        if (currentUser->userType == "lecturer")
+        {
+            mail.addButton(new Button(0, 19, 50, 3, 62));
+            mail.buttonsTab[4].addText("");
+            mail.buttonsTab[4].addText("Send to group");
+        }
+
+        background.viewInterface();
+
+        char ch;
+
+        while (true)
+        {
+            background.viewInterface();
+            mail.viewInterface();
+
+            ch = _getch();
+
+            system("cls");
+
+            mail.moveCursor(ch);
+            if (ch == ' ' && mail.getCurrentButtonInt() == 4 && currentUser->userType == "lecturer")
+            {
+                Lecture* lecture;
+
+                std::string receiver="";
+                for (int i = 0; i < 2; i++)
+                    receiver += mail.buttonsTab[1].textTab[i];
+
+                std::string text="";
+                for (int i = 0; i < 10; i++)
+                    text += mail.buttonsTab[4].textTab[i];
+                for (int i = 0; i < currentUser->userLectures.size(); i++)
+                    if (currentUser->userLectures[i]->name == receiver)
+                        lecture = currentUser->userLectures[i];
+                break;
+
+
+                sendMailToLecture(lecture, text);
+            }
+            if (ch == ' ' && mail.getCurrentButtonInt() == 3 && currentUser->userType != "admin")
+            {
+
+                std::string receiver = "";
+                for (int i = 0; i < 2; i++)
+                    receiver += mail.buttonsTab[1].textTab[i];
+
+                std::string text = "";
+                for (int i = 0; i < 10; i++)
+                    text += mail.buttonsTab[4].textTab[i];
+
+                sendMail(receiver, text);
+                break;
+            }
+            else
+            {
+                User* user=currentUser;
+
+
+                std::string sender = "";
+                for (int i = 0; i < 2; i++)
+                    sender += mail.buttonsTab[0].textTab[i];
+
+                currentUser = UsersData::findUser(sender);///PYTANIE ?????????????????????????????????????????????/
+
+                std::string receiver = "";
+                for (int i = 0; i < 2; i++)
+                    receiver += mail.buttonsTab[1].textTab[i];
+
+                std::string text = "";
+                for (int i = 0; i < 10; i++)
+                    text += mail.buttonsTab[4].textTab[i];
+
+                sendMail(receiver, text);
+
+                currentUser = user;
+                break;
+            }
+            if (ch == 27)
+                break;
+
+        }
+    }
+    void sendMail(std::string eAdress, std::string text)
+    {
+        currentUser->mbox.sendEmail(eAdress,text);
+    }
+    void sendMailToLecture(Lecture* lecture, std::string text)
+    {
+        for(int i= 0 ;i< lecture->participants.size();i++)
+        currentUser->mbox.sendEmail(&(lecture->participants[i]->mbox),text);
+    }
 };
 class CallendarSystem
 {
@@ -599,7 +879,7 @@ public:
 
         list.addButton(new Button(4, 28, 15, 3, 32));//add Event
         list.buttonsTab[12].addText("");
-        list.buttonsTab[12].addText(" + Ingridient");
+        list.buttonsTab[12].addText(" + Event");
 
         char ch;
         while (true)
@@ -956,7 +1236,8 @@ public:
                 menu.buttonsTab[2].addText("Powiadomienia");
                 menu.buttonsTab[2].setButtonFunction([&]() {selectNotifications(); });
             }
-
+            std::cout << "xd";
+            _getch();
             menu.addButton(new Button(0, 11, 30, 3, 62));//
             menu.buttonsTab[3].addText("");
             menu.buttonsTab[3].addText("Mail");
@@ -972,9 +1253,8 @@ public:
                 menu.addButton(new Button(0, 17, 30, 3, 62));//
                 menu.buttonsTab[5].addText("");
                 menu.buttonsTab[5].addText("Rejestracja");
-                menu.buttonsTab[3].setButtonFunction([&]() {selectRegister(); });
+                menu.buttonsTab[5].setButtonFunction([&]() {selectRegister(); });
             }
-            menu.viewInterface();
 
             char ch;
 
@@ -993,24 +1273,31 @@ public:
     }
     void selectNotifications()
     {
-
+        std::cout << "pucim pwaanie";
+        system("cls");
     }
     void selectRegister()
     {
-
+        std::cout << "pucimdanie";
+        system("cls");
     }
     void selectChat()
     {
-
+        std::cout << "pucim panie";
+        system("cls");
     }
     void selectMail()
     {
-
+        std::cout << "pucim12312313e";
+        mail->currentUser = currentUser;
+        mail->viewMailBox();
+        system("cls");
     }
     void selectCallendar()
     {
         callendar->currentUser = currentUser;
         callendar->viewCallendar();
+        system("cls");
     }
 };
 
