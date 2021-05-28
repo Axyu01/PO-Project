@@ -24,6 +24,7 @@ class Date
 {
 	friend class MailBox;
 	friend class CallendarSystem;
+	friend class NotificationSystem;
 
 	int year = 2000;
 	int month = 1;
@@ -58,6 +59,7 @@ class Event
 {
 	friend class CallendarData;
 	friend class CallendarSystem;
+	friend class NotificationSystem;
 
 	std::string eventName;
 	Date eventDate;
@@ -370,6 +372,7 @@ class User
 	friend class RegisterSystem;
 	friend class CallendarData;
 	friend class MailSystem;
+	friend class NotificationSystem;
 
 	std::string email;
 	std::string login;

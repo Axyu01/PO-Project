@@ -2425,7 +2425,45 @@ class NotificationSystem
     User* currentUser;
     
 
+    NotificationSystem()
+    {
 
+    }
+    void showLatest()
+    {
+        Interface list;
+
+        list.addButton(new Button(0,0,40,3,62));
+        list.buttonsTab[0].addText("");
+        list.buttonsTab[0].addText("Najnowsze notyfikacje:");
+        list.buttonsTab[0].addText("");
+
+        for (int i = 1; i < 11; i++)
+        {
+            if (i <= currentUser->customEvents.size())
+            {
+                list.addButton(new Button(0, i * 3, 40, 3, 62));
+                list.buttonsTab[i].addText(currentUser->customEvents[currentUser->customEvents.size() - i]->eventName);
+                list.buttonsTab[i].addText(std::to_string(currentUser->customEvents[currentUser->customEvents.size() - i]->eventDate.month) + " " + std::to_string(currentUser->customEvents[currentUser->customEvents.size() - i]->eventDate.day)
+                    + " " + std::to_string(currentUser->customEvents[currentUser->customEvents.size() - i]->eventDate.hour) + ":" + std::to_string(currentUser->customEvents[currentUser->customEvents.size() - i]->eventDate.minute));
+                list.buttonsTab[i].addText("");
+            }
+        }
+        char ch;
+        while (true)
+        {
+            ch=_getch();
+            list.moveCursor(ch);
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+
+
+
+        }
+    }
 };
 /*
 class IngridientData
@@ -2665,7 +2703,7 @@ public:
         {
             loginScr.viewInterface();
             background.viewInterface();
-
+            //ciagly update danych logowania
             login = loginScr.buttonsTab[0].textTab[0] + loginScr.buttonsTab[0].textTab[1] + loginScr.buttonsTab[0].textTab[2];
             password = loginScr.buttonsTab[1].textTab[0] + loginScr.buttonsTab[1].textTab[1] + loginScr.buttonsTab[1].textTab[2];
 
@@ -2675,7 +2713,7 @@ public:
         }
 
     }
-    void drawMenu()
+    void drawMenu()//Menu z wszystkimi opcjami wyboru w zaleznosci od UserType
     {
         system("cls");
         if (UsersData::verifyUser(login, password) != nullptr)
@@ -3019,7 +3057,7 @@ public:
 
     void selectNotifications()
     {
-        std::cout << "pucim pwaanie";
+        notifications->showLatest();
         system("cls");
     }
     void selectRegister()
