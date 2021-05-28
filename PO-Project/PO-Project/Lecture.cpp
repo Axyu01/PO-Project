@@ -14,8 +14,12 @@ Lecture::Lecture(std::string nn, bool ev, int wd, Date sd, int lc, int ul, int u
 
 void Lecture::addParticipant(User* usr)
 {
-	participants.push_back(usr);
-	usr->joinLecture(this);
+	if (userCount < userLimit)
+	{
+		participants.push_back(usr);
+		usr->joinLecture(this);
+		userCount++;
+	}
 }
 
 
@@ -27,8 +31,10 @@ void Lecture::delParticipant(User* usr)
 		{
 			participants.erase(participants.begin() + i);
 			usr->leaveLecture(this);
+			userCount--;
 		}
 	}
+	
 }
 
 void Lecture::clearParticipants()

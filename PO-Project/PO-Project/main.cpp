@@ -2,6 +2,7 @@
 #include "Data.h"
 #include <string>
 #include <conio.h>
+#include <stdexcept>
 
 // FrontEnd.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
 //
@@ -217,6 +218,11 @@ public:
             return true;
         else
             return false;
+    }
+
+    int size()
+    {
+        return tabSize;
     }
 
     void lookForClosest(bool (*statement)(int, int), bool inAxisX)
@@ -617,7 +623,7 @@ public:
             optList.buttonsTab[size * 2].addText("");
             optList.buttonsTab[size * 2].addText(" +Dodaj nowy+ ");
             optList.buttonsTab[size * 2].addText("");
-            optList.buttonsTab[size * 2].setButtonFunction([&]() {});
+            optList.buttonsTab[size * 2].setButtonFunction([&]() {addNewSpec(); });
 
             deleted = false;
             while (!deleted)
@@ -682,7 +688,7 @@ public:
         optList.buttonsTab[size * 2].addText("");
         optList.buttonsTab[size * 2].addText(" +Dodaj nowy+ ");
         optList.buttonsTab[size * 2].addText("");
-        optList.buttonsTab[size * 2].setButtonFunction([&]() {});
+        optList.buttonsTab[size * 2].setButtonFunction([&]() {addNewCourse(); });
 
         deleted = false;
         while (!deleted)
@@ -748,7 +754,7 @@ public:
         optList.buttonsTab[size * 2].addText("");
         optList.buttonsTab[size * 2].addText(" +Dodaj nowy+ ");
         optList.buttonsTab[size * 2].addText("");
-        optList.buttonsTab[size * 2].setButtonFunction([&]() {});
+        optList.buttonsTab[size * 2].setButtonFunction([&]() {addNewGroup(); });
 
 
         deleted = false;
@@ -816,7 +822,7 @@ public:
         optList.buttonsTab[size * 2].addText("");
         optList.buttonsTab[size * 2].addText(" +Dodaj nowy+ ");
         optList.buttonsTab[size * 2].addText("");
-        optList.buttonsTab[size * 2].setButtonFunction([&]() {});
+        optList.buttonsTab[size * 2].setButtonFunction([&]() {addNewLecture(); });
 
         deleted = false;
         while (!deleted)
@@ -1021,10 +1027,11 @@ public:
 
             char ch = _getch();
 
-            which_spec = optList.getCurrentButtonInt();
+            if (optList.size()) {
+                which_spec = optList.getCurrentButtonInt();
 
-            optList.moveCursor(ch);
-
+                optList.moveCursor(ch);
+            }
             if (ch == 27)
             {
                 break;
@@ -1138,7 +1145,6 @@ public:
         Interface background;
         Interface optList;
 
-
         background.addButton(new Button(0, 0, 23 + currentUser->spec->name.size(), 3, 62));
         background.buttonsTab[0].addText("");
         background.buttonsTab[0].addText("==KURSY DOSTEPNE DLA " + currentUser->spec->name + "==");
@@ -1166,10 +1172,11 @@ public:
             optList.viewInterface();
 
             char ch = _getch();
+            if (optList.size()) {
+                which_course = optList.getCurrentButtonInt();
 
-            which_course=optList.getCurrentButtonInt();
-
-            optList.moveCursor(ch);
+                optList.moveCursor(ch);
+            }
 
             if (ch == 27)
             {
@@ -1215,11 +1222,12 @@ public:
             optList.viewInterface();
 
             char ch = _getch();
+            if (optList.size()) 
+            {
+                which_group = optList.getCurrentButtonInt();
 
-            which_group = optList.getCurrentButtonInt();
-
-            optList.moveCursor(ch);
-
+                optList.moveCursor(ch);
+            }
             if (ch == 27)
             {
                 system("cls");
@@ -1283,18 +1291,17 @@ public:
 
             char ch = _getch();
 
-            which_lecture = optList.getCurrentButtonInt();
+            if (optList.size()) {
+                which_lecture = optList.getCurrentButtonInt();
 
-            optList.moveCursor(ch);
-
+                optList.moveCursor(ch);
+            }
             if (ch == 27)
             {
                 system("cls");
                 break;
             }
         }
-
-
     }
 
     void joinLecture()
@@ -1321,7 +1328,310 @@ public:
         }
 
     }
+
+    void addNewSpec()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+        background.addButton(new Button(0, 0, 38, 4, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==WPROWADZ NAZWE DLA NOWEGO KIERUNKU==");
+        background.buttonsTab[0].addText("   ESC ABY WROCIC || ENTER ABY ZATW.  ");
+
+        optList.addButton(new Button(0, 5, 30, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {optList.buttonsTab[0].realTimeInput(); });
+
+
+        while (true)
+        {
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+
+            std::string name = optList.buttonsTab[0].textTab[0] + optList.buttonsTab[0].textTab[1] + optList.buttonsTab[0].textTab[2];
+
+            if(ch==13)
+            {
+                system("cls");
+                RegisterData::addSpec(name);
+                deleted = true;
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+
+    void addNewCourse()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+        background.addButton(new Button(0, 0, 38, 4, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("  ==WPROWADZ NAZWE DLA NOWEGO KURSU== ");
+        background.buttonsTab[0].addText("   ESC ABY WROCIC || ENTER ABY ZATW.  ");
+
+        optList.addButton(new Button(0, 5, 30, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {optList.buttonsTab[0].realTimeInput(); });
+
+
+        while (true)
+        {
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+
+            std::string name = optList.buttonsTab[0].textTab[0] + optList.buttonsTab[0].textTab[1] + optList.buttonsTab[0].textTab[2];
+
+            if (ch == 13)
+            {
+                system("cls");
+                RegisterData::specs[which_spec]->addCourse(name);
+                deleted = true;
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+
+    void addNewGroup()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+        background.addButton(new Button(0, 0, 38, 4, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("  ==WPROWADZ NAZWE DLA NOWEJ GRUPY==  ");
+        background.buttonsTab[0].addText("   ESC ABY WROCIC || ENTER ABY ZATW.  ");
+
+        optList.addButton(new Button(0, 5, 30, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {optList.buttonsTab[0].realTimeInput(); });
+
+
+        while (true)
+        {
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+
+            std::string name = optList.buttonsTab[0].textTab[0] + optList.buttonsTab[0].textTab[1] + optList.buttonsTab[0].textTab[2];
+
+            if (ch == 13)
+            {
+                system("cls");
+                RegisterData::specs[which_spec]->courses[which_course]->addGroup(name);
+                deleted = true;
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+    }
+
+    void addNewLecture()
+        {
+            system("cls");
+            Interface background;
+            Interface optList;
+
+            bool ev;
+
+            background.addButton(new Button(0, 0, 37, 4, 62));
+            background.buttonsTab[0].addText("");
+            background.buttonsTab[0].addText(" ==WPROWADZ DANE DOT. NOWYCH ZAJEC== ");
+            background.buttonsTab[0].addText("           ESC ABY WROCIC            ");
+
+            background.addButton(new Button(0, 4, 10, 3, 62));
+            background.buttonsTab[1].addText("");
+            background.buttonsTab[1].addText("NAZWA >>");
+            background.buttonsTab[1].addText("ZAJ.");
+
+            background.addButton(new Button(0, 7, 10, 3, 62));
+            background.buttonsTab[2].addText("");
+            background.buttonsTab[2].addText("CYKL? >>");
+            background.buttonsTab[2].addText("");
+
+            background.addButton(new Button(0, 10, 37, 1, 62));
+            background.buttonsTab[3].addText("FORMAT DATY TO <dd-mm-yyyy hh:min>");
+
+            background.addButton(new Button(0, 11, 10, 3, 62));
+            background.buttonsTab[4].addText("");
+            background.buttonsTab[4].addText("DATA  >>");
+            background.buttonsTab[4].addText("POCZ.");
+
+            background.addButton(new Button(0, 14, 10, 3, 62));
+            background.buttonsTab[5].addText("");
+            background.buttonsTab[5].addText("IL.ZAJ>>");
+            background.buttonsTab[5].addText("");
+
+            background.addButton(new Button(0, 17, 10, 3, 62));
+            background.buttonsTab[6].addText("");
+            background.buttonsTab[6].addText("LIMIT >>");
+            background.buttonsTab[6].addText("STUD.");
+
+
+            optList.addButton(new Button(10, 4, 27, 3, 62));
+            optList.buttonsTab[0].addText("");
+            optList.buttonsTab[0].addText("");
+            optList.buttonsTab[0].addText("");
+            optList.buttonsTab[0].setButtonFunction([&]() {optList.buttonsTab[0].realTimeInput(); });
+
+            optList.addButton(new Button(10, 7, 7, 3, 62));
+            optList.buttonsTab[1].addText("");
+            optList.buttonsTab[1].addText("  TAK  ");
+            optList.buttonsTab[1].addText("");
+            optList.buttonsTab[1].setButtonFunction([&]() { if (optList.buttonsTab[1].textTab[1] == "  TAK  ") {
+                                                                 optList.buttonsTab[1].editTabText(1, "  NIE  ");
+                                                                    ev = false;}
+                                                            else
+                                                            {
+                                                                    optList.buttonsTab[1].editTabText(1, "  TAK  ");
+                                                                    ev = true;
+                                                            }});
+
+            optList.addButton(new Button(10, 11, 27, 3, 62));
+            optList.buttonsTab[2].addText("");
+            optList.buttonsTab[2].addText("");
+            optList.buttonsTab[2].addText("");
+            optList.buttonsTab[2].setButtonFunction([&]() {optList.buttonsTab[2].realTimeInput(); });
+
+            optList.addButton(new Button(10, 14, 27, 3, 62));
+            optList.buttonsTab[3].addText("");
+            optList.buttonsTab[3].addText("");
+            optList.buttonsTab[3].addText("");
+            optList.buttonsTab[3].setButtonFunction([&]() {optList.buttonsTab[3].realTimeInput(); });
+
+            optList.addButton(new Button(10, 17, 27, 3, 62));
+            optList.buttonsTab[4].addText("");
+            optList.buttonsTab[4].addText("");
+            optList.buttonsTab[4].addText("");
+            optList.buttonsTab[4].setButtonFunction([&]() {optList.buttonsTab[4].realTimeInput(); });
+
+            optList.addButton(new Button(10, 20, 27, 3, 62));
+            optList.buttonsTab[5].addText("");
+            optList.buttonsTab[5].addText("        >>UWTWORZ<<        ");
+            optList.buttonsTab[5].addText("");
+            optList.buttonsTab[5].setButtonFunction([&]() { 
+                
+
+                    system("cls");
+                    try
+                    {
+                        std::string name;
+                        std::string date = optList.buttonsTab[2].textTab[0].substr(0,16);
+                        std::string lc_s = optList.buttonsTab[3].textTab[0];
+                        std::string ul_s = optList.buttonsTab[4].textTab[0];;
+
+                        std::string yy, mm, dd, hh, min;
+                        name = optList.buttonsTab[0].textTab[0] + optList.buttonsTab[0].textTab[1] + optList.buttonsTab[0].textTab[2];
+
+                        Date temp;
+
+
+                        int lc = std::stoi(lc_s);
+                        int ul = std::stoi(ul_s);
+
+
+                        if (date.size() == 16)
+                        {
+
+                            dd = date.substr(0, 2);
+                            mm = date.substr(3, 2);
+                            yy = date.substr(6, 4);
+
+                            hh = date.substr(11, 2);
+                            min = date.substr(14, 2);
+
+                            temp.changeDate(std::stoi(min), std::stoi(hh), std::stoi(dd), std::stoi(mm), std::stoi(yy));
+                        }
+                        else
+                            throw std::invalid_argument("Zle wartosci");
+
+                        RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->addLecture(name,ev,0,temp,lc,ul,0);
+                        deleted = true;
+                    }
+                    catch (const std::invalid_argument& ia)
+                    {
+
+                        background.buttonsTab[0].editTabText(1, " ==WPROWADZONO ZLY FORMAT DANYCH!!== ");
+                        background.buttonsTab[0].editTabText(2, "       POPRAW WPROAWDZONE DANE       ");
+                        background.viewInterface();
+                        optList.viewInterface();
+                        _getch();
+                        background.buttonsTab[0].editTabText(1, " ==WPROWADZ DANE DOT. NOWYCH ZAJEC== ");
+                        background.buttonsTab[0].editTabText(2, "           ESC ABY WROCIC            ");
+                    }
+
+                });
+
+
+            while (!deleted)
+            {
+
+
+
+
+
+
+
+                background.viewInterface();
+                optList.viewInterface();
+
+                char ch = _getch();
+
+                optList.moveCursor(ch);
+
+
+
+
+                if (ch == 27)
+                {
+                    system("cls");
+                    break;
+                }
+            }
+
+        }
 };
+
+
+
+
 class ChatSystem
 {
     //////////////////////////////////////////////
