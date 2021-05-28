@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <ctime>
 #include "Funkcje_zapis.h"
 
 
@@ -29,22 +30,33 @@ class Date
 	int hour = 12;
 	int minute = 0;
 
+
 public:
 
 	Date();
-	Date(int, int, int, int=12, int=0);
-	void changeDate(int, int, int, int, int);
-	void changeDate(int, int, int, int);
-	void changeDate(int, int);
+	Date(int yy, int mm, int dd, int hh=12, int min=0);
+	void changeDate(int min, int hh, int dd, int mm, int yy);
+	void changeDate(int min, int hh, int dd, int mm);
+	void changeDate(int min, int hh);
 	void offsetDaysBy(int);
 	void roundDate();
 	bool isLeapYear();
 	std::string toString();
+	static bool isSameDay(const Date& first, const Date& second);
+
+
+	int returnDayOfWeek();
+	int returnDaysInMonth();
+	int returnFirstDay();
+
+
 	void printDate();
 };
 
 class Event
 {
+	friend class CallendarData;
+
 	std::string eventName;
 	Date eventDate;
 	std::string description;
@@ -73,8 +85,8 @@ public:
 
 	UsersData();
 
-	void addUser();
-	void delUser();
+	void addUser(std::string ll, std::string pp, std::string tt);
+	void delUser(User* usr);
 	void editUser();
 
 	bool userExists(std::string);
@@ -91,6 +103,7 @@ public:
 class RegisterData : public Data
 {
 	friend class Menu;
+	friend class RegisterSystem;
 	static std::vector<Spec*> specs;
 	friend int main();
 
@@ -150,6 +163,8 @@ class CallendarData :public Data
 public:
 	CallendarData();
 
+	static std::vector<Event*> returnUserEvents(User*,const Date&);
+
 	void saveToFile();
 	void readFromFile();
 };
@@ -157,6 +172,7 @@ public:
 class Chat
 {
 	friend class ChatData;
+	friend class ChatSystem;
 
 	std::string chatName;
 	std::vector<std::string> chatArchive;
@@ -177,6 +193,9 @@ class Lecture
 	friend class Group;
 	friend class User;
 	friend class Menu;
+	friend class ChatSystem;
+	friend class RegisterSystem;
+	friend class CallendarData;
 	friend class MailSystem;
 
 	std::string name;
@@ -208,6 +227,7 @@ class Group
 {
 	friend class Course;
 	friend class Menu;
+	friend class RegisterSystem;
 
 	std::string name;
 	std::vector<Lecture*> lectures;
@@ -232,6 +252,7 @@ class Course
 {
 	friend class Spec;
 	friend class Menu;
+	friend class RegisterSystem;
 
 	std::string name;
 	std::vector<Group*> groups;
@@ -255,6 +276,7 @@ public:
 
 class Spec
 {
+	friend class RegisterSystem;
 	friend class RegisterData;
 	friend class Menu;
 	friend class UsersData;
@@ -340,6 +362,9 @@ class User
 	friend class Menu;
 	friend class Lecture;
 	friend class Spec;
+	friend class ChatSystem;
+	friend class RegisterSystem;
+	friend class CallendarData;
 	friend class MailSystem;
 
 	std::string email;

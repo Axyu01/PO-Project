@@ -57,6 +57,48 @@ void Date::printDate() {
 	std::cout << std::setw(2) << std::setfill('0') << hour << ":" << std::setw(2) << std::setfill('0') << minute << std::setw(1) << "   " << std::setw(2) << day << "-" << std::setw(2) << std::setfill('0') << month << "-" << year;
 }
 
+int Date::returnDayOfWeek()
+{
+	int dd = day;
+	int mm = month;
+	int yy = year;
+
+	yy -= mm < 3; 
+	return(yy + yy / 4 - yy / 100 + yy / 400 + "-bed=pen+mad."[mm] + dd) % 7;
+
+	//0 = niedziela, 1 = poniedzialek, 2 = wtorek, 3 = sroda, 4 = czwartek, 5 = piatek, 6 = sobota
+
+}
+
+int Date::returnDaysInMonth()
+{
+	switch (month)
+	{
+	case 2:
+			if (isLeapYear())
+				return 29;
+			return 28;
+	case 4: return 30;
+	case 6: return 30;
+	case 9: return 30;
+	case 11: return 30;
+	default: return 31;
+	}
+}
+
+int Date::returnFirstDay()
+{
+	Date temp = *this;
+
+	temp.day = 1;
+	return temp.returnDayOfWeek();
+}
+
+bool Date::isSameDay(const Date& first, const Date& second)
+{
+	return (first.day == second.day && first.month == second.month && first.year == second.year);
+}
+
 void Date::roundDate()
 {
 	bool going = true;

@@ -23,7 +23,6 @@ void Lecture::delParticipant(User* usr)
 {
 	for (int i = 0; i < participants.size(); i++)
 	{
-
 		if (participants[i] == usr)
 		{
 			participants.erase(participants.begin() + i);

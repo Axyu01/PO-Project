@@ -12,9 +12,15 @@ User* UsersData::currentUser;
 UsersData::UsersData()
 {}
 
-void UsersData::addUser(){}
+void UsersData::addUser(std::string ll, std::string pp, std::string tt)
+{
+	std::string em = ll + "@pwr.edu.pl";
 
-void UsersData::delUser(){}
+	userList.push_back(new User(em, ll, pp, tt));
+	saveToFile();
+}
+
+void UsersData::delUser(User* usr){}
 
 void UsersData::editUser(){}
 
