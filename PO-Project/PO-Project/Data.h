@@ -107,7 +107,6 @@ class RegisterData : public Data
 	friend class Menu;
 	friend class RegisterSystem;
 	static std::vector<Spec*> specs;
-	friend int main();
 
 public:
 
@@ -141,6 +140,7 @@ class MailData : public Data
 {
 	friend class MailBox;
 	friend class User;
+	friend class Menu;
 
 	static std::vector<MailBox*> mailBoxList;
 
@@ -335,6 +335,7 @@ class MailBox
 	friend class User;
 	friend class MailSystem;
 	friend class UsersData;
+	friend class Menu;
 
 	std::string address;
 	std::vector<Mail*> mail;
@@ -400,7 +401,7 @@ public:
 
 
 	//void addEvent();
-	//void addEvent(Date);
-	void delCusomEvent(Event*);
+	void addCustomEvent(Event*);
+	void delCustomEvent(Event*);
 
 };
