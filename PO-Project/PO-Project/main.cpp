@@ -1843,6 +1843,18 @@ public:
         char ch;
         while (true)
         {
+            for (int i = 0; i < 10; i++)
+            {
+                list.buttonsTab[i].textTab[1] = "";
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (currentUser->mbox.mail.size() > i + 10 * listPage)
+                    list.buttonsTab[i].textTab[1] = currentUser->mbox.mail[i + 10 * listPage]->date.toString() + currentUser->mbox.mail[i + 10 * listPage]->sender;
+            }
+
+
             list.viewInterface();
             ch = _getch();
 
@@ -1852,32 +1864,27 @@ public:
             {
             case ' '://do zrobienia//Wybieranie eventu
             {
-                int intVar=list.getCurrentButtonInt();
-                if (intVar < 10)
-                {
-                    viewMailContents(intVar+10*listPage);
-                }
-                else if (intVar == 10)
-                {
-                    listPage--;
-
-                    for (int i = 0; i < 10; i++)
+                int intVar = list.getCurrentButtonInt();
+                if (intVar < currentUser->mbox.mail.size()) {
+                   
+                    if (intVar < 10)
                     {
-                        if(currentUser->mbox.mail.size()>i+10*listPage)
-                        list.buttonsTab[i].textTab[1]=currentUser->mbox.mail[i + 10 * listPage]->date.toString() + currentUser->mbox.mail[i + 10 * listPage]->sender;
+                        viewMailContents(intVar + 10 * listPage);
+                    }
+                    else if (intVar == 10)
+                    {
+                        if (listPage > 0)
+                            listPage--;
+
 
                     }
                 }
                 else if (intVar == 11)
                 {
-                    listPage++;
+                    if (currentUser->mbox.mail.size()>(listPage+1)*10)
+                     listPage++;
 
-                    for (int i = 0; i < 10; i++)
-                    {
-                        if (currentUser->mbox.mail.size() > i + 10 * listPage)
-                            list.buttonsTab[i].textTab[1] = currentUser->mbox.mail[i + 10 * listPage]->date.toString() + currentUser->mbox.mail[i + 10 * listPage]->sender;
 
-                    }
                 }
                 else if (intVar == 12)
                 {
@@ -1944,13 +1951,17 @@ public:
         {
             ch=_getch();
             mail.moveCursor(ch);
-            if (ch == ' ' && mail.getCurrentButtonInt() == 4 && currentUser->userType == "admin")
+            if (ch == ' ' && mail.getCurrentButtonInt() == 4 && currentUser->userType == "admin" && currentUser->mbox.mail.size())
             {
                 currentUser->mbox.deleteEmail(var+1);
-            }
-            if (ch == 27)
                 system("cls");
                 break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
         }
 
         //currentUser->mbox.mail[var]->date.toString() + currentUser->mbox.mail[var]->sender;
@@ -2121,7 +2132,8 @@ public:
 
             }
         }
-        //CallendarData::returnUserEvents(currentUser,*(new Date(2021,5,28,0,0)))//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        CallendarData::returnUserEvents(currentUser, *(new Date(2021, 10, 8, 0, 0)));//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         for (int i = monthFirstDay-1; i < daysInMonth + monthFirstDay - 1; i++)
         {
             callendar.buttonsTab[i].textTab[1] += std::to_string(i - monthFirstDay + 2);
@@ -2581,6 +2593,17 @@ private:
     MailSystem* mail;
     CallendarSystem* callendar;
     NotificationSystem* notifications;
+
+    RegisterData regd;
+    UsersData usersd;
+    MailData maild;
+    ChatData chatd;
+
+    Data* data[4] = { &usersd ,&regd, &chatd ,&maild };
+
+
+
+
     std::string login;
     std::string password;
 public:
@@ -2595,6 +2618,8 @@ public:
     }
     void loginScreen()
     {
+        readData(data);
+
         Interface loginScr;
         //Button(xPos,yPos,xSize,ySize,color)
         loginScr.addButton(new Button(7, 3, 23, 3, 62));//login
@@ -2715,9 +2740,21 @@ public:
                 menu.buttonsTab[5].setButtonFunction([&]() {selectRegister(); });
             }
 
+            int pos;
+
+            if (currentUser->userType == "student")
+                pos = 20;
+            else if (currentUser->userType == "lecturer" || currentUser->userType == "admin")
+                pos = 14;
+
+
+            menu.addButton(new Button(0,pos,30,3,62));
+            menu.buttonsTab[menu.size()-1].addText("");
+            menu.buttonsTab[menu.size()-1].addText(">>WYLOGUJ<<");
+            menu.buttonsTab[menu.size()-1].setButtonFunction([&]() {currentUser=nullptr; system("cls");});
             char ch;
 
-            while(true)
+            while(currentUser!=nullptr)
             {
                 menu.viewInterface();
                 ch = _getch();
@@ -2751,31 +2788,33 @@ public:
                                                             std::string name = MailData::mailBoxList[which_mbox]->address;
                                                             name.erase(name.find('@'),name.npos);
                                                             currentUser = UsersData::findUser( name );
+                                                            std::string prevtp = currentUser->userType;
+                                                            currentUser->userType = "admin";
                                                             selectMail();
+                                                            currentUser->userType = prevtp;
                 });
         }
 
         while (true)
         {
-
+            currentUser = temp;
             background.viewInterface();
             optList.viewInterface();
 
             char ch = _getch();
 
+            which_mbox = optList.getCurrentButtonInt();
 
             optList.moveCursor(ch);
-
-            which_mbox = optList.getCurrentButtonInt();
 
             if (ch == 27)
             {
                 system("cls");
                 break;
             }
-            
+
         }
-        currentUser = temp;
+
     }
 
     void Users()
@@ -3006,20 +3045,36 @@ public:
         callendar->viewCallendar();
         system("cls");
     }
+
+    void saveData(Data* dt[4])
+    {
+        for (int i=0;i<4;i++)
+        {
+            dt[i]->saveToFile();
+        }
+    }
+
+    void readData(Data* dt[4])
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            dt[i]->readFromFile();
+        }
+    }
 };
 
 int main()
 {
-    RegisterData regd;
-    UsersData usersd;
-    MailData maild;
-    ChatData chatd;
+    //RegisterData regd;
+    //UsersData usersd;
+    //MailData maild;
+    //ChatData chatd;
 
-    Data* data[4] = { &usersd ,&regd, &chatd ,&maild };
+    //Data* data[4] = { &usersd ,&regd, &chatd ,&maild };
 
-    data[0]->readFromFile();
-    data[1]->readFromFile();
-    data[2]->readFromFile();
+    //data[0]->readFromFile();
+    //data[1]->readFromFile();
+    //data[2]->readFromFile();
 
     Menu menu;
 
