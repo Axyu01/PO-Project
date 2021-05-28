@@ -72,7 +72,7 @@ public:
                     }
                     else if (textTab[i].size() > 0)
                     {
-                        textTab[i].erase(textTab[i].end());
+                        textTab[i].erase(textTab[i].end()-1);
                     }
                 }
             }
@@ -2290,7 +2290,7 @@ public:
                 {
                     Event* event=eventList[intVar];
                     eventList.erase(eventList.begin()+intVar);
-                    currentUser->delCusomEvent(event);
+                    currentUser->delCustomEvent(event);
                     system("cls");
                     break;
                 }
@@ -2302,14 +2302,44 @@ public:
         system("cls");
         Interface list;
         Interface background;
-        for (int i=0; i < 6; i++)
-        {
-            list.addButton(new Button(4, i * 1, 30, 1, 48));
-            list.buttonsTab[i].addText("");
-            list.buttonsTab[i].setButtonFunction([&]() {list.buttonsTab[i].realTimeInput(); });
-            background.addButton(new Button(0, i * 1, 4, 1, 48));
-            background.buttonsTab[i].addText("");
-        }
+
+            list.addButton(new Button(4, 0 * 1, 30, 1, 48));
+            list.buttonsTab[0].addText("");
+            list.buttonsTab[0].setButtonFunction([&]() {list.buttonsTab[0].realTimeInput(); });
+            background.addButton(new Button(0, 0 * 1, 4, 1, 48));
+            background.buttonsTab[0].addText("");
+
+            list.addButton(new Button(4, 1 * 1, 30, 1, 48));
+            list.buttonsTab[1].addText("");
+            list.buttonsTab[1].setButtonFunction([&]() {list.buttonsTab[1].realTimeInput(); });
+            background.addButton(new Button(0, 1 * 1, 4, 1, 48));
+            background.buttonsTab[1].addText("");
+
+            list.addButton(new Button(4, 2 * 1, 30, 1, 48));
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].setButtonFunction([&]() {list.buttonsTab[2].realTimeInput(); });
+            background.addButton(new Button(0, 2 * 1, 4, 1, 48));
+            background.buttonsTab[2].addText("");
+
+            list.addButton(new Button(4, 3 * 1, 30, 1, 48));
+            list.buttonsTab[3].addText("");
+            list.buttonsTab[3].setButtonFunction([&]() {list.buttonsTab[3].realTimeInput(); });
+            background.addButton(new Button(0, 3 * 1, 4, 1, 48));
+            background.buttonsTab[3].addText("");
+
+            list.addButton(new Button(4, 4 * 1, 30, 1, 48));
+            list.buttonsTab[4].addText("");
+            list.buttonsTab[4].setButtonFunction([&]() {list.buttonsTab[4].realTimeInput(); });
+            background.addButton(new Button(0, 4 * 1, 4, 1, 48));
+            background.buttonsTab[4].addText("");
+
+            list.addButton(new Button(4, 5 * 1, 30, 1, 48));
+            list.buttonsTab[5].addText("");
+            list.buttonsTab[5].setButtonFunction([&]() {list.buttonsTab[5].realTimeInput(); });
+            background.addButton(new Button(0, 5 * 1, 4, 1, 48));
+            background.buttonsTab[5].addText("");
+
+
         background.buttonsTab[0].textTab[0] = "name";
         background.buttonsTab[1].textTab[0] = "yr: ";
         background.buttonsTab[2].textTab[0] = "mth:";
@@ -2319,22 +2349,22 @@ public:
 
 
         list.addButton(new Button(4, 6, 30, 10, 48));
-        list.buttonsTab[5].addText("tu wpisz opis");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].addText("");
-        list.buttonsTab[5].setButtonFunction([&]() {list.buttonsTab[5].realTimeInput(); });
-
-
-        list.addButton(new Button(4, 6 + 10, 30, 3, 48));
+        list.buttonsTab[6].addText("tu wpisz opis");
         list.buttonsTab[6].addText("");
-        list.buttonsTab[6].addText("add Event");
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].setButtonFunction([&]() {list.buttonsTab[6].realTimeInput(); });
+
+
+        list.addButton(new Button(4, 16, 30, 3, 48));
+        list.buttonsTab[7].addText("");
+        list.buttonsTab[7].addText("add Event");
 
         char ch;
 
@@ -2346,7 +2376,7 @@ public:
             ch = _getch();
 
             list.moveCursor(ch);
-            if (ch == ' ' && list.getCurrentButtonInt()==6)
+            if (ch == ' ' && list.getCurrentButtonInt()==7)
             {
                 std::string name= list.buttonsTab[0].textTab[0];
 
@@ -2363,7 +2393,6 @@ public:
                 Event* event = new Event(name, *(new Date(std::stoi(year), std::stoi(month), std::stoi(day), std::stoi(hour), std::stoi(minute))), description);
                 eventList.push_back(event);
                 currentUser->addCustomEvent(event);
-                //eventList.push_back(new Event(name,new Date(),description);
                 system("cls");
                 break;
             }
@@ -2380,6 +2409,10 @@ public:
 class NotificationSystem
 {
     friend Menu;
+
+    User* currentUser;
+    
+
 
 };
 /*
