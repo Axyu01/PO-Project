@@ -17,10 +17,22 @@ void UsersData::addUser(std::string ll, std::string pp, std::string tt)
 	std::string em = ll + "@pwr.edu.pl";
 
 	userList.push_back(new User(em, ll, pp, tt));
-	saveToFile();
 }
 
-void UsersData::delUser(User* usr){}
+void UsersData::delUser(User* usr)
+{
+	usr->leaveSpec();
+	for (int i = 1; i <= usr->mbox.mail.size();i++)
+	{
+		usr->mbox.deleteEmail(i);
+	}
+
+	for (int i= 0; i<userList.size();i++)
+	{
+		if (userList[i] == usr)
+			userList.erase(userList.begin() + i);
+	}
+}
 
 void UsersData::editUser(){}
 

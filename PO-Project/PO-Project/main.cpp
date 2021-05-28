@@ -2411,6 +2411,9 @@ class Menu
 private:
     User* currentUser;
 
+    int which_user;
+    bool running = true;
+
     ChatSystem* chat;
     RegisterSystem* registerSys;
     MailSystem* mail;
@@ -2556,8 +2559,204 @@ public:
 
     void Users()
     {
+        system("cls");
+
+        Interface background;
+        Interface optList;
+        Interface list;
+
+        background.addButton(new Button(0, 0, 27, 3,62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==LISA UZYTKOWNIKOW==");
+        background.buttonsTab[0].addText("");
+
+        int size = UsersData::userList.size();
+
+        for (int i=0;i<UsersData::userList.size();i++)
+        {
+            list.addButton(new Button(0, 3 + (i * 3), 25, 3, 62));
+            list.buttonsTab[i].addText("");
+            std::string name = UsersData::userList[i]->login;
+
+            if (name.size() > 25)
+                name = name.substr(0, 21) + "...";
+
+            list.buttonsTab[i].addText(name);
+            list.buttonsTab[i].addText("");
+            list.buttonsTab[i].setButtonFunction([&]() {});
+        }
+
+        for (int i = 0; i < UsersData::userList.size(); i++)
+        {
+            optList.addButton(new Button(26, 3 + (i * 3), 6, 3, 62));
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].addText(" USUN ");
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {if (UsersData::userList[which_user] != currentUser) { userDelPrompt(); }});
+        }
+
+        optList.addButton(new Button(0, 4 + (size * 3), 25, 3, 62));
+        optList.buttonsTab[size].addText("");
+        optList.buttonsTab[size].addText(" +Dodaj nowego+ ");
+        optList.buttonsTab[size].addText("");
+        optList.buttonsTab[size].setButtonFunction([&]() {addUser(); });
+
+        running = true;
+        while (running)
+        {
+
+            background.viewInterface();
+            optList.viewInterface();
+            list.viewInterface();
+
+            char ch = _getch();
+
+            which_user=optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
 
     }
+
+    void userDelPrompt()
+    {
+        Interface background;
+        Interface optList;
+
+        int size = RegisterData::specs.size();
+
+        User* which = UsersData::userList[which_user];
+        optList.addButton(new Button(33, 3 + ((which_user) * 3), 11, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText(" NA PEWNO? ");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() { 
+                                                            UsersData::delUser(which);
+                                                            running = false;
+                                                                                                          });
+
+        running = true;
+        while (running)
+        {
+
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+
+            if (ch == ' ')
+            {
+                system("cls");
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+
+    void addUser()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+        background.addButton(new Button(0, 0, 38, 4, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText(" ==WPROWADZ DANE NOWEGO UZYTKOWNIKA== ");
+        background.buttonsTab[0].addText("            ESC ABY WROCIC            ");
+
+        background.addButton(new Button(0, 4, 10, 3, 62));
+        background.buttonsTab[1].addText("");
+        background.buttonsTab[1].addText("LOGIN >>");
+        background.buttonsTab[1].addText("");
+
+        background.addButton(new Button(0, 7, 10, 3, 62));
+        background.buttonsTab[2].addText("");
+        background.buttonsTab[2].addText("HASLO >>");
+        background.buttonsTab[2].addText("");
+
+        background.addButton(new Button(0, 10, 10, 3, 62));
+        background.buttonsTab[3].addText("");
+        background.buttonsTab[3].addText("TYP >>");
+        background.buttonsTab[3].addText("");
+
+
+
+        optList.addButton(new Button(10, 4, 27, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {optList.buttonsTab[0].realTimeInput(); });
+
+        optList.addButton(new Button(10, 7, 27, 3, 62));
+        optList.buttonsTab[1].addText("");
+        optList.buttonsTab[1].addText("");
+        optList.buttonsTab[1].addText("");
+        optList.buttonsTab[1].setButtonFunction([&]() {optList.buttonsTab[1].realTimeInput(); });
+
+        optList.addButton(new Button(10, 10, 27, 3, 62));
+        optList.buttonsTab[2].addText("");
+        optList.buttonsTab[2].addText("student");
+        optList.buttonsTab[2].addText("");
+        optList.buttonsTab[2].setButtonFunction([&]() {
+            if (optList.buttonsTab[2].textTab[1] == "student")
+                optList.buttonsTab[2].editTabText(1, "lecturer");
+            else if(optList.buttonsTab[2].textTab[1] == "lecturer")
+                optList.buttonsTab[2].editTabText(1, "admin");
+            else if (optList.buttonsTab[2].textTab[1] == "admin")
+                optList.buttonsTab[2].editTabText(1, "student");
+            });
+
+        optList.addButton(new Button(10, 13, 27, 3, 62));
+        optList.buttonsTab[3].addText("");
+        optList.buttonsTab[3].addText("  >>UTWORZ NOWEGO<<");
+        optList.buttonsTab[3].addText("");
+        optList.buttonsTab[3].setButtonFunction([&]() {
+            
+            std::string lg = optList.buttonsTab[0].textTab[0] + optList.buttonsTab[0].textTab[1] + optList.buttonsTab[0].textTab[2];
+            std::string ps = optList.buttonsTab[1].textTab[0] + optList.buttonsTab[1].textTab[1] + optList.buttonsTab[1].textTab[2];
+            std::string tp = optList.buttonsTab[2].textTab[0] + optList.buttonsTab[2].textTab[1] + optList.buttonsTab[2].textTab[2];
+            
+           
+                UsersData::addUser(lg,ps,tp);
+                running = false;
+                system("cls");
+
+            });
+
+
+
+        running = true;
+        while (running)
+        {
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+
+
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+
     void selectNotifications()
     {
         std::cout << "pucim pwaanie";
