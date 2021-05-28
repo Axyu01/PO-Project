@@ -2624,6 +2624,11 @@ public:
                 menu.buttonsTab[2].addText("");
                 menu.buttonsTab[2].addText("Kierunki/Wektory");
                 menu.buttonsTab[2].setButtonFunction([&]() {selectRegister(); });
+
+                menu.addButton(new Button(0, 11, 30, 3, 62));//
+                menu.buttonsTab[3].addText("");
+                menu.buttonsTab[3].addText("Skrzynki Mailowe");
+                menu.buttonsTab[3].setButtonFunction([&]() {editMailBoxes(); });
             }
             else
             {
@@ -2636,13 +2641,15 @@ public:
                 menu.buttonsTab[2].addText("");
                 menu.buttonsTab[2].addText("Powiadomienia");
                 menu.buttonsTab[2].setButtonFunction([&]() {selectNotifications(); });
+
+                menu.addButton(new Button(0, 11, 30, 3, 62));//
+                menu.buttonsTab[3].addText("");
+                menu.buttonsTab[3].addText("Mail");
+                menu.buttonsTab[3].setButtonFunction([&]() {selectMail(); });
             }
             std::cout << "xd";
             _getch();
-            menu.addButton(new Button(0, 11, 30, 3, 62));//
-            menu.buttonsTab[3].addText("");
-            menu.buttonsTab[3].addText("Mail");
-            menu.buttonsTab[3].setButtonFunction([&]() {selectMail(); });
+
 
             if (currentUser->userType == "student")
             {
@@ -2666,6 +2673,58 @@ public:
                 menu.moveCursor(ch);
             }
         }
+    }
+
+    void editMailBoxes()
+    {
+
+        int which_mbox;
+        User* temp = currentUser;
+        system("cls");
+
+        Interface background;
+        Interface optList;
+
+        background.addButton(new Button(0, 0, 22, 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==LISTA SKRZYNEK MAILOWYCH==");
+        background.buttonsTab[0].addText("");
+
+        for (int i = 0; i < MailData::mailBoxList.size(); i++)
+        {
+            optList.addButton(new Button(0, 3 + (i * 3), 20, 3, 62));
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].addText(MailData::mailBoxList[i]->address);
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {
+                                                            std::string name = MailData::mailBoxList[which_mbox]->address;
+                                                            name.erase(name.find('@'),name.npos);
+                                                            currentUser = UsersData::findUser( name );
+                                                            selectMail();
+                });
+        }
+
+        while (true)
+        {
+
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+
+            optList.moveCursor(ch);
+
+            which_mbox = optList.getCurrentButtonInt();
+
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+            
+        }
+        currentUser = temp;
     }
 
     void Users()

@@ -68,7 +68,7 @@ bool User::isRegistered(Lecture* lec)
 	return false;
 }
 
-void User::delCusomEvent(Event* ev)
+void User::delCustomEvent(Event* ev)
 {
 	for (int i=0;i<customEvents.size();i++)
 	{
@@ -77,4 +77,9 @@ void User::delCusomEvent(Event* ev)
 			customEvents.erase(customEvents.begin() + i);
 		}
 	}
+}
+
+void User::addCustomEvent(Event*ev)
+{
+	customEvents.push_back(ev);
 }
