@@ -42,6 +42,10 @@ void User::leaveSpec()
 {
 	if (spec != nullptr)
 	{
+		for (auto l : userLectures)
+		{
+			l->delParticipant(this);
+		}
 		spec = nullptr;
 	}
 }
