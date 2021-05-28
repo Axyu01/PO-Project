@@ -3,7 +3,7 @@
 Pierwszy@pwr.edu.pl
 Pierwszy
 password1
-student
+admin
 ==========
 ArekPytka@pwr.edu.pl
 ArekPytka

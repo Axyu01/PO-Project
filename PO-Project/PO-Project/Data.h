@@ -85,8 +85,8 @@ public:
 
 	UsersData();
 
-	void addUser();
-	void delUser();
+	void addUser(std::string ll, std::string pp, std::string tt);
+	void delUser(User* usr);
 	void editUser();
 
 	bool userExists(std::string);

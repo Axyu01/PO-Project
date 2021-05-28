@@ -511,6 +511,8 @@ private:
     int which_group = 0;
     int which_lecture = 0;
 
+    bool deleted = false;
+
 public:
 
     RegisterSystem(){}
@@ -521,68 +523,472 @@ public:
         Interface background;
         Interface optList;
 
+        if (currentUser->userType == "student")
+        {
+            background.addButton(new Button(0, 0, 30 + currentUser->login.size(), 3, 62));
+            background.buttonsTab[0].addText("");
+            background.buttonsTab[0].addText("==WITAJ W SYSTEMIE ZAPISOW " + currentUser->login + "==");
+            background.buttonsTab[0].addText("");
 
-        background.addButton(new Button(0, 0, 30 + currentUser->login.size(), 3, 62));
-        background.buttonsTab[0].addText("");
-        background.buttonsTab[0].addText("==WITAJ W SYSTEMIE ZAPISOW " + currentUser->login + "==");
-        background.buttonsTab[0].addText("");
+            if (!currentUser->isRegistered()) {
+                optList.addButton(new Button(0, 3, 28, 3, 62));
+                optList.buttonsTab[0].addText("");
+                optList.buttonsTab[0].addText("Wybierz kierunek");
+                optList.buttonsTab[0].setButtonFunction([&]() { selectSpec(); });
 
-        if (!currentUser->isRegistered()) {
-            optList.addButton(new Button(0, 3, 28, 3, 62));
-            optList.buttonsTab[0].addText("");
-            optList.buttonsTab[0].addText("Wybierz kierunek");
-            optList.buttonsTab[0].setButtonFunction([&]() { selectSpec(); });
+                while (currentUser->spec == nullptr)
+                {
+                    background.viewInterface();
+                    optList.viewInterface();
 
-            while (currentUser->spec==nullptr)
+                    char ch = _getch();
+
+                    which_spec = optList.getCurrentButtonInt();
+                    optList.moveCursor(ch);
+
+                    if (ch == 27)
+                    {
+                        system("cls");
+                        break;
+                    }
+                }
+            }
+            else
             {
-                system("cls");
+                optList.addButton(new Button(0, 3, 28, 3, 62));
+                optList.buttonsTab[0].addText("");
+                optList.buttonsTab[0].addText("Zapisy na zajecia");
+                optList.buttonsTab[0].setButtonFunction([&]() {selectCourse(); });
+
+                optList.addButton(new Button(0, 6, 28, 3, 62));
+                optList.buttonsTab[1].addText("");
+                optList.buttonsTab[1].addText("Wypisz sie z kierunku " + currentUser->spec->name);
+                optList.buttonsTab[1].setButtonFunction([&]() {leaveSpec(); });
+
+                while (currentUser->spec != nullptr)
+                {
+                    background.viewInterface();
+                    optList.viewInterface();
+
+                    char ch = _getch();
+
+                    optList.getCurrentButtonInt();
+
+                    optList.moveCursor(ch);
+
+                    if (ch == 27)
+                    {
+                        system("cls");
+                        break;
+                    }
+                }
+            }
+        }
+        else if (currentUser->userType == "admin")
+        {
+            background.addButton(new Button(0, 0, 30, 3, 62));
+            background.buttonsTab[0].addText("");
+            background.buttonsTab[0].addText("==WYBIERZ KIERUNEK DO EDYCJI==");
+            background.buttonsTab[0].addText("");
+
+            int size = RegisterData::specs.size();
+
+
+            for (int i = 0; i < RegisterData::specs.size(); i++)
+            {
+                optList.addButton(new Button(0, 3 + (i * 3), 20, 3, 62));
+                optList.buttonsTab[i].addText("");
+                optList.buttonsTab[i].addText(RegisterData::specs[i]->name);
+                optList.buttonsTab[i].addText("");
+                optList.buttonsTab[i].setButtonFunction([&]() {selectEditSpec(); });
+            }
+
+            for (int i = 0; i < RegisterData::specs.size(); i++)
+            {
+                optList.addButton(new Button(26, 3 + (i * 3), 6, 3, 62));
+                optList.buttonsTab[i + size].addText("");
+                optList.buttonsTab[i + size].addText(" USUN ");
+                optList.buttonsTab[i + size].addText("");
+                optList.buttonsTab[i + size].setButtonFunction([&]() {specDelPrompt(); });
+            }
+
+
+            optList.addButton(new Button(0, 4 + (size * 3), 25, 3, 62));
+            optList.buttonsTab[size * 2].addText("");
+            optList.buttonsTab[size * 2].addText(" +Dodaj nowy+ ");
+            optList.buttonsTab[size * 2].addText("");
+            optList.buttonsTab[size * 2].setButtonFunction([&]() {});
+
+            deleted = false;
+            while (!deleted)
+            {
                 background.viewInterface();
                 optList.viewInterface();
 
                 char ch = _getch();
-
-                optList.moveCursor(ch);
 
                 which_spec = optList.getCurrentButtonInt();
-
-                if (ch == 27)
-                {
-                    break;
-                }
-            }
-        }
-        else
-        {
-            optList.addButton(new Button(0, 3, 28, 3, 62));
-            optList.buttonsTab[0].addText("");
-            optList.buttonsTab[0].addText("Zapisy na zajecia");
-            optList.buttonsTab[0].setButtonFunction([&]() {selectCourse(); });
-
-            optList.addButton(new Button(0, 6, 28, 3, 62));
-            optList.buttonsTab[1].addText("");
-            optList.buttonsTab[1].addText("Wypisz sie z kierunku " + currentUser->spec->name);
-            optList.buttonsTab[1].setButtonFunction([&]() {leaveSpec(); });
-
-            while (currentUser->spec != nullptr)
-            {
-                system("cls");
-                background.viewInterface();
-                optList.viewInterface();
-
-                char ch = _getch();
-
-                optList.getCurrentButtonInt();
-
                 optList.moveCursor(ch);
 
+
                 if (ch == 27)
                 {
+                    system("cls");
                     break;
                 }
             }
         }
-
      }
+
+    void selectEditSpec()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+        background.addButton(new Button(0, 0, 22 + RegisterData::specs[which_spec]->name.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==KURSY NA KIERUNKU " + RegisterData::specs[which_spec]->name +"==");
+        background.buttonsTab[0].addText("");
+
+        int size = RegisterData::specs[which_spec]->courses.size();
+
+
+
+        for (int i = 0; i < RegisterData::specs[which_spec]->courses.size(); i++)
+        {
+            optList.addButton(new Button(0, 3 + (i * 3), 25, 3, 62));
+            optList.buttonsTab[i].addText("");
+            std::string name = RegisterData::specs[which_spec]->courses[i]->name;
+
+            if (name.size() > 25)
+                name = name.substr(0, 21) + "...";
+
+            optList.buttonsTab[i].addText(name);
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {selectEditCourse(); });
+        }
+
+        for (int i = 0; i < RegisterData::specs[which_spec]->courses.size(); i++)
+        {
+            optList.addButton(new Button(26, 3 + (i * 3), 6, 3, 62));
+            optList.buttonsTab[i + size].addText("");
+            optList.buttonsTab[i + size].addText(" USUN ");
+            optList.buttonsTab[i + size].addText("");
+            optList.buttonsTab[i + size].setButtonFunction([&]() {courseDelPrompt(); });
+        }
+
+        optList.addButton(new Button(0, 4 + (size * 3), 25, 3, 62));
+        optList.buttonsTab[size * 2].addText("");
+        optList.buttonsTab[size * 2].addText(" +Dodaj nowy+ ");
+        optList.buttonsTab[size * 2].addText("");
+        optList.buttonsTab[size * 2].setButtonFunction([&]() {});
+
+        deleted = false;
+        while (!deleted)
+        {
+
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            which_course = optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+
+    void selectEditCourse()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+        background.addButton(new Button(0, 0, 16 + RegisterData::specs[which_spec]->courses[which_course]->name.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==GRUPY KURSU " + RegisterData::specs[which_spec]->courses[which_course]->name + "==");
+        background.buttonsTab[0].addText("");
+
+        int size = RegisterData::specs[which_spec]->courses[which_course]->groups.size();
+
+
+
+        for (int i = 0; i < RegisterData::specs[which_spec]->courses[which_course]->groups.size(); i++)
+        {
+            optList.addButton(new Button(0, 3 + (i * 3), 25, 3, 62));
+            optList.buttonsTab[i].addText("");
+            std::string name = RegisterData::specs[which_spec]->courses[which_course]->groups[i]->name;
+
+            if (name.size() > 25)
+                name = name.substr(0, 21) + "...";
+
+            optList.buttonsTab[i].addText(name);
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {selectEditGroup(); });
+        }
+
+        for (int i = 0; i < RegisterData::specs[which_spec]->courses[which_course]->groups.size(); i++)
+        {
+            optList.addButton(new Button(26, 3 + (i * 3), 6, 3, 62));
+            optList.buttonsTab[i + size].addText("");
+            optList.buttonsTab[i + size].addText(" USUN ");
+            optList.buttonsTab[i + size].addText("");
+            optList.buttonsTab[i + size].setButtonFunction([&]() {groupDelPrompt(); });
+        }
+
+        optList.addButton(new Button(0, 4 + (size * 3), 25, 3, 62));
+        optList.buttonsTab[size * 2].addText("");
+        optList.buttonsTab[size * 2].addText(" +Dodaj nowy+ ");
+        optList.buttonsTab[size * 2].addText("");
+        optList.buttonsTab[size * 2].setButtonFunction([&]() {});
+
+
+        deleted = false;
+        while (!deleted)
+        {
+
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            which_group = optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+    
+    void selectEditGroup()
+    {
+        system("cls");
+        Interface background;
+        Interface optList;
+
+        background.addButton(new Button(0, 0, 21 + RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->name.size(), 3, 62));
+        background.buttonsTab[0].addText("");
+        background.buttonsTab[0].addText("==ZAJECIA W GRUPIE " + RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->name + "==");
+        background.buttonsTab[0].addText("");
+
+        int size = RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->lectures.size();
+
+
+
+        for (int i = 0; i < RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->lectures.size(); i++)
+        {
+            optList.addButton(new Button(0, 3 + (i * 3), 25, 3, 62));
+            optList.buttonsTab[i].addText("");
+
+            std::string name = RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->lectures[i]->name;
+
+            if (name.size() > 25)
+                name = name.substr(0, 21) + "...";
+
+            optList.buttonsTab[i].addText(name);
+            optList.buttonsTab[i].addText("");
+            optList.buttonsTab[i].setButtonFunction([&]() {});
+        }
+
+        for (int i = 0; i < RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->lectures.size(); i++)
+        {
+            optList.addButton(new Button(26, 3 + (i * 3), 6, 3, 62));
+            optList.buttonsTab[i + size].addText("");
+            optList.buttonsTab[i + size].addText(" USUN ");
+            optList.buttonsTab[i + size].addText("");
+            optList.buttonsTab[i + size].setButtonFunction([&]() {lecDelPrompt(); });
+        }
+
+        optList.addButton(new Button(0, 4 + (size * 3), 25, 3, 62));
+        optList.buttonsTab[size * 2].addText("");
+        optList.buttonsTab[size * 2].addText(" +Dodaj nowy+ ");
+        optList.buttonsTab[size * 2].addText("");
+        optList.buttonsTab[size * 2].setButtonFunction([&]() {});
+
+        deleted = false;
+        while (!deleted)
+        {
+            background.viewInterface();
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            which_lecture = optList.getCurrentButtonInt();
+
+            optList.moveCursor(ch);
+
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+    }
+
+    void lecDelPrompt()
+    {
+        Interface background;
+        Interface optList;
+
+        int size = RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->lectures.size();
+
+        std::string lec_name = RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->lectures[which_lecture-size]->name;
+        optList.addButton(new Button(33, 3 + ((which_lecture-size) * 3), 11, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText(" NA PEWNO? ");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {RegisterData::specs[which_spec]->courses[which_course]->groups[which_group]->delLecture(lec_name);
+                                                       deleted = true; });
+
+        while (true)
+        {
+
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+            
+            if (ch == ' ')
+            {
+                system("cls");
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+
+    void groupDelPrompt()
+    {
+        Interface background;
+        Interface optList;
+
+        int size = RegisterData::specs[which_spec]->courses[which_course]->groups.size();
+
+        std::string grp_name = RegisterData::specs[which_spec]->courses[which_course]->groups[which_group-size]->name;
+        optList.addButton(new Button(33, 3 + ((which_group - size) * 3), 11, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText(" NA PEWNO? ");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {RegisterData::specs[which_spec]->courses[which_course]->delGroup(grp_name);
+        deleted = true; });
+
+        while (true)
+        {
+
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+
+            if (ch == ' ')
+            {
+                system("cls");
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+
+    void courseDelPrompt()
+    {
+        Interface background;
+        Interface optList;
+
+        int size = RegisterData::specs[which_spec]->courses.size();
+
+        std::string crs_name = RegisterData::specs[which_spec]->courses[which_course-size]->name;
+        optList.addButton(new Button(33, 3 + ((which_course - size) * 3), 11, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText(" NA PEWNO? ");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {RegisterData::specs[which_spec]->delCourse(crs_name);
+        deleted = true; });
+
+        while (true)
+        {
+
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+
+            if (ch == ' ')
+            {
+                system("cls");
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
+
+    void specDelPrompt()
+    {
+        Interface background;
+        Interface optList;
+
+        int size = RegisterData::specs.size();
+
+        std::string spc_name = RegisterData::specs[which_spec - size]->name;
+        optList.addButton(new Button(33, 3 + ((which_spec - size) * 3), 11, 3, 62));
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].addText(" NA PEWNO? ");
+        optList.buttonsTab[0].addText("");
+        optList.buttonsTab[0].setButtonFunction([&]() {RegisterData::delSpec(spc_name);
+                                                         deleted = true; });
+
+        while (true)
+        {
+
+            optList.viewInterface();
+
+            char ch = _getch();
+
+            optList.moveCursor(ch);
+
+            if (ch == ' ')
+            {
+                system("cls");
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
+
+    }
 
     void selectSpec()
     {
@@ -745,7 +1151,7 @@ public:
             std::string name = currentUser->spec->courses[i]->name;
 
             if(name.size()>25)
-              std::string name = name.substr(0, 21) + "...";
+              name = name.substr(0, 21) + "...";
 
             optList.buttonsTab[i].addText(name);
             optList.buttonsTab[i].addText("");
@@ -756,7 +1162,6 @@ public:
 
         while (true)
         {
-            system("cls");
             background.viewInterface();
             optList.viewInterface();
 
@@ -768,6 +1173,7 @@ public:
 
             if (ch == 27)
             {
+                system("cls");
                 break;
             }
         }
@@ -794,7 +1200,7 @@ public:
             std::string name = currentUser->spec->courses[which_course]->groups[i]->name;
 
             if (name.size() > 25)
-                std::string name = name.substr(0, 21) + "...";
+                name = name.substr(0, 21) + "...";
 
             optList.buttonsTab[i].addText(name);
             optList.buttonsTab[i].addText("");
@@ -805,7 +1211,6 @@ public:
 
         while (true)
         {
-            system("cls");
             background.viewInterface();
             optList.viewInterface();
 
@@ -817,6 +1222,7 @@ public:
 
             if (ch == 27)
             {
+                system("cls");
                 break;
             }
         }
@@ -863,14 +1269,13 @@ public:
 
         while (true)
         {
-            system("cls");
 
             for (int i = 0; i < currentUser->spec->courses[which_course]->groups[which_group]->lectures.size(); i++)
             {
                 if(currentUser->isRegistered(currentUser->spec->courses[which_course]->groups[which_group]->lectures[i]))
                   background.buttonsTab[1 + i].editTabText(1,">ZAPISANY<");
                 else
-                  background.buttonsTab[1 + i].editTabText(1, "");
+                  background.buttonsTab[1 + i].editTabText(1,"          ");
             }
 
             background.viewInterface();
@@ -884,6 +1289,7 @@ public:
 
             if (ch == 27)
             {
+                system("cls");
                 break;
             }
         }
