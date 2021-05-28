@@ -2431,6 +2431,7 @@ class NotificationSystem
     }
     void showLatest()
     {
+        system("cls");
         Interface list;
 
         list.addButton(new Button(0,0,40,3,62));
@@ -2452,6 +2453,7 @@ class NotificationSystem
         char ch;
         while (true)
         {
+            list.viewInterface();
             ch=_getch();
             list.moveCursor(ch);
             if (ch == 27)
@@ -2722,10 +2724,16 @@ public:
             Interface menu;
 
             menu.addButton(new Button(0, 0, 30, 5, 62));//
+            menu.buttonsTab[0].addText("Ostatnia notyfikacja:");
             menu.buttonsTab[0].addText("");
             menu.buttonsTab[0].addText("");
             menu.buttonsTab[0].addText("");
-            menu.buttonsTab[0].addText("");
+            if (currentUser->customEvents.size() > 0)
+            {
+                menu.buttonsTab[0].textTab[1]=(currentUser->customEvents[currentUser->customEvents.size() - 1]->eventName);
+                menu.buttonsTab[0].textTab[2]=(std::to_string(currentUser->customEvents[currentUser->customEvents.size() - 1]->eventDate.month) + " " + std::to_string(currentUser->customEvents[currentUser->customEvents.size() - 1]->eventDate.day)
+                    + " " + std::to_string(currentUser->customEvents[currentUser->customEvents.size() - 1]->eventDate.hour) + ":" + std::to_string(currentUser->customEvents[currentUser->customEvents.size() - 1]->eventDate.minute));
+            }
 
             if (currentUser->userType == "admin")
             {
@@ -2761,8 +2769,6 @@ public:
                 menu.buttonsTab[3].addText("Mail");
                 menu.buttonsTab[3].setButtonFunction([&]() {selectMail(); });
             }
-            std::cout << "xd";
-            _getch();
 
 
             if (currentUser->userType == "student")
@@ -3057,6 +3063,7 @@ public:
 
     void selectNotifications()
     {
+        notifications->currentUser = currentUser;
         notifications->showLatest();
         system("cls");
     }
