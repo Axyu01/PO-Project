@@ -2281,7 +2281,7 @@ public:
 
             list.addButton(new Button(4, 2 * 2 + 2+10, 30, 3, 48));
             list.buttonsTab[3].addText("");
-            list.buttonsTab[3].addText("usun");
+            list.buttonsTab[3].addText("usun Event");
 
             char ch;
 
@@ -2300,6 +2300,9 @@ public:
                 }
                 if (ch == 3 && list.getCurrentButtonInt()==3)
                 {
+                    Event* event=eventList[intVar];
+                    eventList.erase(eventList.begin()+intVar);
+                    currentUser->delCusomEvent(event);
                     system("cls");
                     break;
                 }
@@ -2310,35 +2313,40 @@ public:
     {
         system("cls");
         Interface list;
-
-        list.addButton(new Button(4, 0 + 2, 30, 2, 48));
-        list.buttonsTab[0].addText("");
-        list.buttonsTab[0].addText("");
-        list.buttonsTab[0].setButtonFunction([&]() {list.buttonsTab[0].realTimeInput(); });
-
-        list.addButton(new Button(4, 1 * 2 + 2, 30, 2, 48));
-        list.buttonsTab[1].addText("");
-        list.buttonsTab[1].addText("");
-        list.buttonsTab[1].setButtonFunction([&]() {list.buttonsTab[1].realTimeInput(); });
-
-
-        list.addButton(new Button(4, 2 * 2 + 2, 30, 10, 48));
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].addText("");
-        list.buttonsTab[2].setButtonFunction([&]() {list.buttonsTab[2].realTimeInput(); });
+        Interface background;
+        for (int i=0; i < 6; i++)
+        {
+            list.addButton(new Button(4, i * 1, 30, 1, 48));
+            list.buttonsTab[i].addText("");
+            list.buttonsTab[i].setButtonFunction([&]() {list.buttonsTab[i].realTimeInput(); });
+            background.addButton(new Button(0, i * 1, 4, 1, 48));
+            background.buttonsTab[i].addText("");
+        }
+        background.buttonsTab[0].textTab[0] = "name";
+        background.buttonsTab[1].textTab[0] = "yr: ";
+        background.buttonsTab[2].textTab[0] = "mth:";
+        background.buttonsTab[3].textTab[0] = "day:";
+        background.buttonsTab[4].textTab[0] = "hr: ";
+        background.buttonsTab[5].textTab[0] = "min:";
 
 
-        list.addButton(new Button(4, 2 * 2 + 2 + 10, 30, 3, 48));
-        list.buttonsTab[3].addText("");
-        list.buttonsTab[3].addText("usun");
+        list.addButton(new Button(4, 6, 30, 10, 48));
+        list.buttonsTab[5].addText("tu wpisz opis");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].addText("");
+        list.buttonsTab[5].setButtonFunction([&]() {list.buttonsTab[5].realTimeInput(); });
+
+
+        list.addButton(new Button(4, 6 + 10, 30, 3, 48));
+        list.buttonsTab[6].addText("");
+        list.buttonsTab[6].addText("add Event");
 
         char ch;
 
@@ -2346,17 +2354,27 @@ public:
         {
             system("cls");
             list.viewInterface();
+            background.viewInterface();
             ch = _getch();
 
             list.moveCursor(ch);
-            if (ch == ' ' && list.getCurrentButtonInt()==3)
+            if (ch == ' ' && list.getCurrentButtonInt()==6)
             {
-                std::string name;
-                std::string day;
-                std::string month;
-                std::string hour;
-                std::string minute;
-                std::string description;
+                std::string name= list.buttonsTab[0].textTab[0];
+
+                std::string year= list.buttonsTab[1].textTab[0];
+                std::string month= list.buttonsTab[2].textTab[0];
+                std::string day= list.buttonsTab[3].textTab[0];
+                std::string hour= list.buttonsTab[4].textTab[0];
+                std::string minute= list.buttonsTab[5].textTab[0];
+
+                std::string description="";
+                for (int i = 0; i < 10; i++)
+                    description += list.buttonsTab[6].textTab[i];
+
+                Event* event = new Event(name, *(new Date(std::stoi(year), std::stoi(month), std::stoi(day), std::stoi(hour), std::stoi(minute))), description);
+                eventList.push_back(event);
+                currentUser->addCustomEvent(event);
                 //eventList.push_back(new Event(name,new Date(),description);
                 system("cls");
                 break;
