@@ -87,8 +87,8 @@ public:
 
 	UsersData();
 
-	void addUser(std::string ll, std::string pp, std::string tt);
-	void delUser(User* usr);
+	static void addUser(std::string ll, std::string pp, std::string tt);
+	static void delUser(User* usr);
 	void editUser();
 
 	bool userExists(std::string);
@@ -334,6 +334,7 @@ class MailBox
 	friend class MailData;
 	friend class User;
 	friend class MailSystem;
+	friend class UsersData;
 
 	std::string address;
 	std::vector<Mail*> mail;
@@ -400,6 +401,6 @@ public:
 
 	//void addEvent();
 	//void addEvent(Date);
-	//void delCusomEvent();
+	void delCusomEvent(Event*);
 
 };

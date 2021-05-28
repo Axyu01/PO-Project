@@ -18,7 +18,7 @@ void Spec::addCourse(std::string nm)
 	courses.push_back(new Course(nm));
 }
 
-void Spec::delCourse(std::string)
+void Spec::delCourse(std::string name)
 {
 	for (int i = 0; i < courses.size(); i++)
 	{
