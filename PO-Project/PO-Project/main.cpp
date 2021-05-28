@@ -1517,32 +1517,22 @@ public:
         }
 
 
-        list.addButton(new Button(4, 22, 15, 3, 32));//prev Events
+        list.addButton(new Button(4, 22, 15, 3, 32));//prev mail
         list.buttonsTab[10].addText("");
         list.buttonsTab[10].addText("prev");
 
 
-        list.addButton(new Button(4, 25, 15, 3, 32));//next Events
+        list.addButton(new Button(4, 25, 15, 3, 32));//next mail
         list.buttonsTab[11].addText("");
         list.buttonsTab[11].addText("next");
 
-        list.addButton(new Button(4, 28, 15, 3, 32));//add Event
+        list.addButton(new Button(4, 28, 15, 3, 32));//send mail
         list.buttonsTab[12].addText("");
         list.buttonsTab[12].addText(" SEND MAIL");
-
-        if (true)
-        {
-
-        }
-        if (true)
-        {
-
-        }
 
         char ch;
         while (true)
         {
-            system("cls");
             list.viewInterface();
             ch = _getch();
 
@@ -1581,13 +1571,14 @@ public:
                 }
                 else if (intVar == 12)
                 {
-                    //sendMail();
+                    viewSendMail();
                 }
             }
             break;
             }
             if (ch == 27)
             {
+                system("cls");
                 break;
             }
         }
@@ -1648,6 +1639,7 @@ public:
                 currentUser->mbox.deleteEmail(var+1);
             }
             if (ch == 27)
+                system("cls");
                 break;
         }
 
@@ -1663,19 +1655,30 @@ public:
 
         mail.addButton(new Button(0, 1, 50, 2, 62));
         if (currentUser->userType != "admin")
+        {
             mail.buttonsTab[0].addText(currentUser->email);
+            mail.buttonsTab[0].addText("");
+        }
         else
+        {
             mail.buttonsTab[0].setButtonFunction([&]() {mail.buttonsTab[0].realTimeInput(); });
-
+            mail.buttonsTab[0].addText("");
+            mail.buttonsTab[0].addText("");
+        }
 
         background.addButton(new Button(0, 3, 50, 1, 62));
         background.buttonsTab[1].addText("to:");
 
         mail.addButton(new Button(0, 4, 50, 2, 62));
         mail.buttonsTab[1].setButtonFunction([&]() {mail.buttonsTab[1].realTimeInput(); });
+        mail.buttonsTab[1].addText("");
+        mail.buttonsTab[1].addText("");
+
 
         mail.addButton(new Button(0, 6, 50, 10, 62));
         mail.buttonsTab[2].setButtonFunction([&]() {mail.buttonsTab[2].realTimeInput(); });
+        for(int i=0;i<10;i++)
+            mail.buttonsTab[2].addText("");
 
         mail.addButton(new Button(0, 16, 50, 3, 62));
         mail.buttonsTab[3].addText("");
@@ -1688,8 +1691,6 @@ public:
             mail.buttonsTab[4].addText("Send to group");
         }
 
-        background.viewInterface();
-
         char ch;
 
         while (true)
@@ -1699,23 +1700,23 @@ public:
 
             ch = _getch();
 
-            system("cls");
-
             mail.moveCursor(ch);
             if (ch == ' ' && mail.getCurrentButtonInt() == 4 && currentUser->userType == "lecturer")
             {
                 Lecture* lecture;
 
-                std::string receiver="";
+                std::string receiver = "";
                 for (int i = 0; i < 2; i++)
                     receiver += mail.buttonsTab[1].textTab[i];
 
-                std::string text="";
+                std::string text = "";
                 for (int i = 0; i < 10; i++)
                     text += mail.buttonsTab[4].textTab[i];
                 for (int i = 0; i < currentUser->userLectures.size(); i++)
                     if (currentUser->userLectures[i]->name == receiver)
                         lecture = currentUser->userLectures[i];
+
+                system("cls");
                 break;
 
 
@@ -1733,11 +1734,13 @@ public:
                     text += mail.buttonsTab[4].textTab[i];
 
                 sendMail(receiver, text);
+
+                system("cls");
                 break;
             }
-            else
+            else if (ch == ' ' && mail.getCurrentButtonInt() == 3 && currentUser->userType == "admin")
             {
-                User* user=currentUser;
+                User* user = currentUser;
 
 
                 std::string sender = "";
@@ -1757,10 +1760,15 @@ public:
                 sendMail(receiver, text);
 
                 currentUser = user;
+
+                system("cls");
                 break;
             }
             if (ch == 27)
+            {
+                system("cls");
                 break;
+            }
 
         }
     }
@@ -1788,22 +1796,31 @@ public:
     {
         system("cls");
         Interface callendar;
-        
-        for (int y = 0; y < 7; y++)
+
+        Date* temp=new Date();
+        int monthFirstDay = (temp->returnFirstDay() + 6)%7+1;//(0,6)(niedziela,sobota)--->(1,7)(pon,niedz)
+        int daysInMonth = temp->returnDaysInMonth();
+        for (int y = 0; y < 6; y++)
         {
             for (int x = 0; x < 7; x++)
             {
+
                 callendar.addButton(new Button(x*4,y*3,4,3,62));
                 callendar.buttonsTab[x + y * 7].addText("");
-                callendar.buttonsTab[x + y * 7].addText("xd");
+                callendar.buttonsTab[x + y * 7].addText(" ");
+
             }
-        }//potrzebna pomoc
+        }
+        //CallendarData::returnUserEvents(currentUser,*(new Date(2021,5,28,0,0)))//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = monthFirstDay-1; i < daysInMonth + monthFirstDay - 1; i++)
+        {
+            callendar.buttonsTab[i].textTab[1] += std::to_string(i - monthFirstDay + 2);
+        }
 
         char ch;
 
         while (true)
         {
-            system("cls");
             callendar.viewInterface();
 
             ch = _getch();
@@ -1814,20 +1831,22 @@ public:
             {
             case ' '://do zrobienia//Wybieranie eventu
                 {
-                    callendar.getCurrentButtonInt();
                     //eventList(new Event("xd", *(new Date), "opis");
-                    eventList();//(new Event("xd", *(new Date), "opis"),1);//potrzebna pomoc
+                temp->day = callendar.getCurrentButtonInt()-monthFirstDay+1;
+                temp->roundDate();
+                    eventList(CallendarData::returnUserEvents(currentUser, *temp));//(new Event("xd", *(new Date), "opis"),1);//potrzebna pomoc
                 }
                 break;
             }
             if (ch == 27)
             {
+                system("cls");
                 break;
             }
         }
 
     }
-    void eventList()//(Event* eventTab,int tabSize)//potrzebna pomoc
+    void eventList(std::vector<Event*> eventList)//(Event* eventTab,int tabSize)//potrzebna pomoc
     {
         system("cls");
         //callendar.getCurrentButtonInt();
@@ -1839,7 +1858,7 @@ public:
         {
             list.addButton(new Button(4, i * 2 + 2, 30, 2, 48));
             list.buttonsTab[i].addText("");
-            list.buttonsTab[i].addText("Event");
+            list.buttonsTab[i].addText("");
 
         }
 
@@ -1860,7 +1879,6 @@ public:
         char ch;
         while (true)
         {
-            system("cls");
             list.viewInterface();
             ch = _getch();
 
@@ -1870,13 +1888,43 @@ public:
             {
             case ' '://do zrobienia//Wybieranie eventu
             {
-                list.getCurrentButtonInt();
-                viewEvent();
+                int intVar = list.getCurrentButtonInt();
+                if (intVar < 10)
+                {
+                    viewEvent(eventList,intVar + 10 * listPage);
+                }
+                else if (intVar == 10)
+                {
+                    listPage--;
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if (eventList.size() > i + 10 * listPage)
+                            list.buttonsTab[i].textTab[1] = eventList[i + 10 * listPage]->eventDate.toString() + eventList[i + 10 * listPage]->eventName;
+
+                    }
+                }
+                else if (intVar == 11)
+                {
+                    listPage++;
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if (eventList.size() > i + 10 * listPage)
+                            list.buttonsTab[i].textTab[1] = eventList[i + 10 * listPage]->eventDate.toString() + eventList[i + 10 * listPage]->eventName;
+
+                    }
+                }
+                else if (intVar == 12)
+                {
+                    addEvent(eventList);
+                }
             }
             break;
             }
-            if(ch==27)
+            if (ch == 27)
             {
+                system("cls");
                 break;
             }
         }
@@ -1884,27 +1932,30 @@ public:
         //refresh();
 
     }
-
-    void eventPrev()
-    {
-
-    }
-    void viewEvent()
+    void viewEvent(std::vector<Event*> eventList,int intVar)
     {
         system("cls");
         Interface list;
 
             list.addButton(new Button(4, 0 + 2, 30, 2, 48));
             list.buttonsTab[0].addText("");
-            list.buttonsTab[0].addText("tytul");
+            list.buttonsTab[0].addText("");
 
             list.addButton(new Button(4, 1 * 2 + 2, 30, 2, 48));
             list.buttonsTab[1].addText("");
-            list.buttonsTab[1].addText("data");
+            list.buttonsTab[1].addText("");
 
             list.addButton(new Button(4, 2 * 2 + 2, 30, 10, 48));
             list.buttonsTab[2].addText("");
-            list.buttonsTab[2].addText("tresc");
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].addText("");
+            list.buttonsTab[2].addText("");
 
             list.addButton(new Button(4, 2 * 2 + 2+10, 30, 3, 48));
             list.buttonsTab[3].addText("");
@@ -1922,18 +1973,78 @@ public:
 
                 if (ch==27)
                 {
-                        break;
+                    system("cls");
+                    break;
+                }
+                if (ch == 3 && list.getCurrentButtonInt()==3)
+                {
+                    system("cls");
+                    break;
                 }
             }
 
     }
-    void addEvent()
+    void addEvent(std::vector<Event*> eventList)
     {
+        system("cls");
+        Interface list;
 
-    }
-    void deleteEvent()
-    {
+        list.addButton(new Button(4, 0 + 2, 30, 2, 48));
+        list.buttonsTab[0].addText("");
+        list.buttonsTab[0].addText("");
+        list.buttonsTab[0].setButtonFunction([&]() {list.buttonsTab[0].realTimeInput(); });
 
+        list.addButton(new Button(4, 1 * 2 + 2, 30, 2, 48));
+        list.buttonsTab[1].addText("");
+        list.buttonsTab[1].addText("");
+        list.buttonsTab[1].setButtonFunction([&]() {list.buttonsTab[1].realTimeInput(); });
+
+
+        list.addButton(new Button(4, 2 * 2 + 2, 30, 10, 48));
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].addText("");
+        list.buttonsTab[2].setButtonFunction([&]() {list.buttonsTab[2].realTimeInput(); });
+
+
+        list.addButton(new Button(4, 2 * 2 + 2 + 10, 30, 3, 48));
+        list.buttonsTab[3].addText("");
+        list.buttonsTab[3].addText("usun");
+
+        char ch;
+
+        while (true)
+        {
+            system("cls");
+            list.viewInterface();
+            ch = _getch();
+
+            list.moveCursor(ch);
+            if (ch == ' ' && list.getCurrentButtonInt()==3)
+            {
+                std::string name;
+                std::string day;
+                std::string month;
+                std::string hour;
+                std::string minute;
+                std::string description;
+                //eventList.push_back(new Event(name,new Date(),description);
+                system("cls");
+                break;
+            }
+            if (ch == 27)
+            {
+                system("cls");
+                break;
+            }
+        }
     }
 
 

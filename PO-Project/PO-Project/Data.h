@@ -23,6 +23,7 @@ class Spec;
 class Date
 {
 	friend class MailBox;
+	friend class CallendarSystem;
 
 	int year = 2000;
 	int month = 1;
@@ -56,6 +57,7 @@ public:
 class Event
 {
 	friend class CallendarData;
+	friend class CallendarSystem;
 
 	std::string eventName;
 	Date eventDate;
